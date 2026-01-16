@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CB Business | Elite Digital Agency</title>
+    <title>CB Business | Elite Digital Management</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -13,50 +13,61 @@
         :root { --primary: #2563eb; --accent: #6366f1; --bg: #020617; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #f8fafc; scroll-behavior: smooth; overflow-x: hidden; }
         #particles-js { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .glass { background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .premium-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 2.5rem; transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+        .glass { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .premium-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 2rem; transition: 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
         .premium-card:hover { transform: translateY(-10px); border-color: var(--primary); box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15); }
         .gradient-text { background: linear-gradient(135deg, #fff 40%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 1000; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); }
-        input, select, textarea { background: rgba(0,0,0,0.3) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; }
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 1000; box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); transition: 0.3s; }
+        .wa-float:hover { transform: scale(1.1) rotate(10deg); }
+        input, select, textarea { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; outline: none; }
+        input:focus { border-color: var(--primary) !important; }
         .loader { width: 18px; height: 18px; border: 2px solid #FFF; border-bottom-color: transparent; border-radius: 50%; display: inline-block; animation: rotation 1s linear infinite; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .stat-card { background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01)); border: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
     <canvas id="particles-js"></canvas>
 
-    <nav class="fixed top-0 w-full z-[1000] glass py-6 px-8 md:px-20 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[1000] glass py-5 px-8 md:px-20 flex justify-between items-center">
         <div class="flex items-center gap-4 cursor-pointer" onclick="location.reload()">
             <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-atom text-white"></i></div>
             <span class="text-xl font-bold tracking-tighter uppercase">CB <span class="text-blue-500">Business</span></span>
         </div>
-        <div class="hidden lg:flex items-center gap-8 text-[9px] font-black uppercase tracking-widest text-slate-400">
-            <a href="#catalog" class="hover:text-blue-400 transition-all">Stock</a>
-            <input type="text" id="search-bar" oninput="searchProducts()" placeholder="PROCURAR ATIVO..." class="bg-transparent border border-white/10 px-4 py-2 rounded-full w-48 text-[10px]">
-            <i onclick="toggleView('login')" class="fa-solid fa-gear opacity-10 hover:opacity-100 cursor-pointer transition-all ml-4"></i>
+        <div class="hidden lg:flex items-center gap-8">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-[10px]"></i>
+                <input type="text" id="search-bar" oninput="searchProducts()" placeholder="PESQUISAR ATIVO..." class="bg-transparent border border-white/10 pl-10 pr-4 py-2 rounded-full w-64 text-[10px] tracking-widest font-bold">
+            </div>
+            <i onclick="toggleView('login')" class="fa-solid fa-shield-halved opacity-20 hover:opacity-100 cursor-pointer transition-all text-xl"></i>
         </div>
     </nav>
 
     <div id="app">
         <div id="public-view" class="pt-40">
-            <section class="text-center px-6 mb-20">
+            <section class="text-center px-6 mb-32">
                 <div class="inline-flex items-center gap-2 bg-blue-600/10 border border-blue-500/20 px-5 py-2 rounded-full mb-8">
-                    <span class="text-blue-500 text-[9px] font-black uppercase tracking-widest">Digital Excellence 2026</span>
+                    <span class="text-blue-500 text-[9px] font-black uppercase tracking-[0.2em]">High-End Digital Resources</span>
                 </div>
                 <h1 class="text-5xl md:text-8xl font-black mb-8 italic uppercase gradient-text leading-tight tracking-tighter">Performance<br>Digital Elite</h1>
-                <p class="text-slate-400 max-w-xl mx-auto mb-12 text-sm font-medium">Aceda a ferramentas de nível industrial otimizadas para o mercado moçambicano.</p>
-                <a href="#catalog" class="bg-blue-600 hover:bg-blue-700 px-12 py-5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20">Explorar Stock</a>
+                <p class="text-slate-400 max-w-xl mx-auto mb-12 text-sm font-medium leading-relaxed">Soluções de engenharia digital e ativos premium curados para o mercado de alta performance em Moçambique.</p>
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="#catalog" class="bg-blue-600 hover:bg-blue-700 px-12 py-5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all shadow-xl shadow-blue-900/20">Explorar Stock</a>
+                    <a href="https://wa.me/258820386282" class="bg-white/5 hover:bg-white/10 px-12 py-5 rounded-2xl text-[10px] font-bold uppercase tracking-widest transition-all border border-white/10">Suporte VIP</a>
+                </div>
             </section>
 
             <section id="catalog" class="py-24 px-8 max-w-7xl mx-auto">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-16">
-                    <h2 class="text-4xl font-black uppercase italic">Inventory <span class="text-blue-600">Live</span></h2>
-                    <div class="flex gap-2 mt-8 bg-white/5 p-1.5 rounded-2xl border border-white/10 text-[9px] font-black uppercase">
-                        <button onclick="filterItems('all')" class="px-6 py-2.5 rounded-xl hover:bg-white/10">Todos</button>
-                        <button onclick="filterItems('app')" class="px-6 py-2.5 rounded-xl hover:bg-white/10">Apps</button>
-                        <button onclick="filterItems('ebook')" class="px-6 py-2.5 rounded-xl hover:bg-white/10">E-Books</button>
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+                    <div>
+                        <h2 class="text-4xl font-black uppercase italic tracking-tighter">Inventory <span class="text-blue-600">Live</span></h2>
+                        <p class="text-slate-500 text-[10px] font-bold uppercase mt-2 tracking-widest">Atualizado em tempo real</p>
+                    </div>
+                    <div class="flex gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 text-[9px] font-black uppercase">
+                        <button onclick="filterItems('all')" class="px-6 py-2.5 rounded-xl hover:bg-white/10 transition-all">Todos</button>
+                        <button onclick="filterItems('app')" class="px-6 py-2.5 rounded-xl hover:bg-white/10 transition-all">Apps</button>
+                        <button onclick="filterItems('ebook')" class="px-6 py-2.5 rounded-xl hover:bg-white/10 transition-all">E-Books</button>
                     </div>
                 </div>
                 <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
@@ -67,43 +78,58 @@
             <div class="bg-slate-900/50 backdrop-blur-3xl p-12 rounded-[3rem] border border-white/10 w-full max-w-sm text-center">
                 <i class="fa-solid fa-fingerprint text-blue-600 text-6xl mb-8"></i>
                 <h2 class="text-xl font-bold uppercase mb-8 tracking-tighter">Acesso Master</h2>
-                <input type="password" id="master-key" placeholder="Chave de Segurança" class="w-full mb-6 p-5 rounded-2xl text-center text-sm">
-                <button onclick="doMasterLogin()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest">Autenticar</button>
-                <button onclick="toggleView('public')" class="mt-8 text-[9px] text-slate-500 font-bold uppercase">Voltar ao Site</button>
+                <input type="password" id="master-key" placeholder="••••••••" class="w-full mb-6 p-5 rounded-2xl text-center text-sm tracking-[1em]">
+                <button onclick="doMasterLogin()" class="w-full bg-blue-600 py-5 rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-blue-500 transition-all">Autenticar Sistema</button>
+                <button onclick="toggleView('public')" class="mt-8 text-[9px] text-slate-500 font-bold uppercase hover:text-white transition-all">Voltar ao Site</button>
             </div>
         </div>
 
         <div id="admin-view" class="hidden min-h-screen pt-40 px-8 pb-20">
             <div class="max-w-7xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Total em Stock</p>
+                        <h3 id="stat-total" class="text-4xl font-black italic italic uppercase">0</h3>
+                    </div>
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Valor Estimado</p>
+                        <h3 id="stat-value" class="text-4xl font-black italic italic uppercase text-blue-500">0 MT</h3>
+                    </div>
+                    <div class="stat-card p-8 rounded-[2rem]">
+                        <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Interações</p>
+                        <h3 id="stat-clicks" class="text-4xl font-black italic italic uppercase text-emerald-500">0</h3>
+                    </div>
+                </div>
+
                 <div class="flex justify-between items-center mb-16">
-                    <h2 class="text-4xl font-black italic uppercase">Control <span class="text-blue-600">Center</span></h2>
-                    <button onclick="toggleView('public')" class="bg-red-500/10 text-red-500 px-8 py-3 rounded-full text-[9px] font-black uppercase border border-red-500/20">Desconectar</button>
+                    <h2 class="text-4xl font-black italic uppercase tracking-tighter">Control <span class="text-blue-600">Center</span></h2>
+                    <button onclick="toggleView('public')" class="bg-red-500/10 text-red-500 px-8 py-3 rounded-full text-[9px] font-black uppercase border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">Encerrar Sessão</button>
                 </div>
 
                 <div class="grid lg:grid-cols-12 gap-12">
                     <div class="lg:col-span-4">
                         <div class="bg-white/5 p-8 rounded-[2.5rem] border border-white/10 sticky top-32">
-                            <h4 id="form-title" class="text-blue-500 font-black uppercase text-[10px] mb-8 tracking-widest">Novo Ativo</h4>
+                            <h4 id="form-title" class="text-blue-500 font-black uppercase text-[10px] mb-8 tracking-[0.3em]">Novo Ativo Digital</h4>
                             <div class="space-y-4">
-                                <input type="text" id="p-title" placeholder="Nome do Ativo" class="w-full p-4 rounded-xl text-xs">
+                                <input type="text" id="p-title" placeholder="Nome do Produto" class="w-full p-4 rounded-xl text-xs font-bold">
                                 <div class="grid grid-cols-2 gap-3">
-                                    <input type="number" id="p-price" placeholder="Preço MT" class="p-4 rounded-xl text-xs">
-                                    <select id="p-type" class="p-4 rounded-xl text-xs">
-                                        <option value="app">App</option>
+                                    <input type="number" id="p-price" placeholder="Preço (MT)" class="p-4 rounded-xl text-xs font-bold">
+                                    <select id="p-type" class="p-4 rounded-xl text-xs font-bold">
+                                        <option value="app">Aplicação</option>
                                         <option value="ebook">E-Book</option>
                                     </select>
                                 </div>
-                                <div class="bg-black/40 p-4 rounded-xl border border-white/5">
-                                    <label class="text-[9px] font-black text-slate-500 uppercase block mb-2">Upload de Capa</label>
-                                    <input type="file" id="p-file" accept="image/*" class="w-full text-[10px] text-slate-400">
+                                <div class="bg-black/40 p-5 rounded-xl border border-white/5">
+                                    <label class="text-[9px] font-black text-slate-500 uppercase block mb-3">Imagem de Capa (Upload)</label>
+                                    <input type="file" id="p-file" accept="image/*" class="w-full text-[10px] text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-[10px] file:font-black file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer">
                                     <input type="hidden" id="p-cover-url">
                                 </div>
-                                <input type="text" id="p-link" placeholder="Link de Download (Google Drive/Mega)" class="w-full p-4 rounded-xl text-xs">
-                                <textarea id="p-desc" placeholder="Descrição técnica..." class="w-full p-4 rounded-xl text-xs h-32"></textarea>
-                                <button id="btn-save" onclick="saveProduct()" class="w-full bg-blue-600 py-5 rounded-xl font-black uppercase text-[10px] tracking-widest flex justify-center items-center gap-3 shadow-lg shadow-blue-600/20">
-                                    <span>Publicar no Stock</span>
+                                <input type="text" id="p-link" placeholder="Link de Entrega (Drive/Mega)" class="w-full p-4 rounded-xl text-xs font-bold">
+                                <textarea id="p-desc" placeholder="Especificações técnicas e descrição..." class="w-full p-4 rounded-xl text-xs font-bold h-32"></textarea>
+                                <button id="btn-save" onclick="saveProduct()" class="w-full bg-blue-600 py-5 rounded-xl font-black uppercase text-[10px] tracking-[0.2em] flex justify-center items-center gap-3 shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all">
+                                    <span>Sincronizar no Stock</span>
                                 </button>
-                                <button id="btn-cancel" onclick="resetForm()" class="hidden w-full bg-white/5 py-3 rounded-xl text-[9px] font-black uppercase">Cancelar Edição</button>
+                                <button id="btn-cancel" onclick="resetForm()" class="hidden w-full bg-white/5 py-3 rounded-xl text-[9px] font-black uppercase text-slate-400">Descartar Alterações</button>
                             </div>
                         </div>
                     </div>
@@ -111,7 +137,7 @@
                     <div class="lg:col-span-8">
                         <div class="bg-white/2 rounded-[2.5rem] border border-white/5 overflow-hidden">
                             <table class="w-full text-left">
-                                <thead class="bg-white/5 text-[10px] font-black text-slate-500 uppercase">
+                                <thead class="bg-white/5 text-[10px] font-black text-slate-500 uppercase tracking-widest">
                                     <tr>
                                         <th class="p-6">Ativo</th>
                                         <th class="p-6">Preço</th>
@@ -128,16 +154,20 @@
     </div>
 
     <div id="details-modal" class="hidden fixed inset-0 flex items-center justify-center z-[2000] p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" onclick="closeDetails()"></div>
+        <div class="absolute inset-0 bg-black/98 backdrop-blur-2xl" onclick="closeDetails()"></div>
         <div class="relative max-w-4xl w-full bg-slate-900 rounded-[3rem] border border-white/10 flex flex-col md:flex-row overflow-hidden shadow-2xl">
-            <div class="md:w-1/2 p-8 bg-black/20"><img id="det-img" class="w-full aspect-square object-cover rounded-[2rem]"></div>
-            <div class="md:w-1/2 p-10 flex flex-col">
-                <h2 id="det-title" class="text-3xl font-black uppercase italic mb-2"></h2>
-                <p id="det-price" class="text-2xl font-black text-blue-500 mb-6"></p>
+            <div class="md:w-1/2 p-8 bg-black/40 flex items-center justify-center">
+                <img id="det-img" class="w-full aspect-square object-cover rounded-[2.5rem] shadow-2xl">
+            </div>
+            <div class="md:w-1/2 p-12 flex flex-col">
+                <div id="det-tag" class="text-blue-500 text-[9px] font-black uppercase tracking-[0.3em] mb-4">Ativo Verificado</div>
+                <h2 id="det-title" class="text-4xl font-black uppercase italic mb-2 tracking-tighter leading-none"></h2>
+                <p id="det-price" class="text-2xl font-black text-blue-500 mb-8"></p>
+                <div class="h-px bg-white/5 w-full mb-8"></div>
                 <p id="det-desc" class="text-slate-400 text-sm leading-relaxed mb-10 flex-1"></p>
                 <div class="flex gap-4">
-                    <button id="det-download-btn" class="flex-1 bg-white text-black py-5 rounded-2xl font-black text-[10px] uppercase hover:bg-blue-600 hover:text-white transition-all">Download Ativo</button>
-                    <button onclick="closeDetails()" class="px-6 bg-white/5 rounded-2xl border border-white/10"><i class="fa-solid fa-xmark"></i></button>
+                    <button id="det-download-btn" class="flex-1 bg-white text-black py-5 rounded-2xl font-black text-[10px] uppercase hover:bg-blue-600 hover:text-white transition-all tracking-widest">Obter Ativo</button>
+                    <button onclick="closeDetails()" class="px-8 bg-white/5 rounded-2xl border border-white/10 hover:bg-red-500/10 hover:text-red-500 transition-all"><i class="fa-solid fa-xmark"></i></button>
                 </div>
             </div>
         </div>
@@ -146,6 +176,7 @@
     <a href="https://wa.me/258820386282" target="_blank" class="wa-float"><i class="fa-brands fa-whatsapp"></i></a>
 
     <script>
+        // CREDENCIAIS SUPABASE
         const SUPABASE_URL = 'https://godaswedwiopldcaeuvq.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_BZ4EUkworgGfHC5-gdw3iQ_MF4FfLnT';
         const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -155,7 +186,7 @@
         async function init() {
             await fetchData();
             initParticles();
-            ScrollReveal().reveal('.premium-card', { interval: 100, distance: '20px', origin: 'bottom' });
+            ScrollReveal().reveal('.premium-card', { interval: 80, distance: '30px', origin: 'bottom', scale: 0.9 });
         }
 
         async function fetchData() {
@@ -163,20 +194,35 @@
             if (error) console.error("Erro Supabase:", error);
             allProducts = data || [];
             renderCatalog(allProducts);
+            updateStats();
         }
 
         function renderCatalog(items) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = items.map(p => `
-                <div class="premium-card p-5 cursor-pointer group" onclick="openDetails('${p.id}')">
-                    <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-square object-cover rounded-[1.8rem] mb-5 shadow-2xl transition-all group-hover:scale-[1.02]">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="text-[11px] font-black uppercase truncate pr-4">${p.title}</h3>
-                        <span class="text-[8px] bg-blue-600/20 text-blue-400 px-2 py-1 rounded-md font-bold uppercase">${p.type}</span>
+                <div class="premium-card p-6 cursor-pointer group" onclick="openDetails('${p.id}')">
+                    <div class="relative overflow-hidden rounded-[1.5rem] mb-6 shadow-2xl">
+                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-square object-cover transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-end p-6">
+                            <span class="text-[8px] font-black uppercase tracking-widest text-white">Ver Especificações</span>
+                        </div>
                     </div>
-                    <span class="text-blue-500 font-black text-[11px]">${p.price > 0 ? p.price.toLocaleString() + ' MT' : 'GRÁTIS'}</span>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-[11px] font-black uppercase truncate pr-4 tracking-tighter">${p.title}</h3>
+                        <span class="text-[7px] bg-blue-600/10 text-blue-400 border border-blue-500/20 px-2 py-1 rounded-md font-black uppercase tracking-widest">${p.type}</span>
+                    </div>
+                    <span class="text-blue-500 font-black text-[12px] tracking-widest">${p.price > 0 ? p.price.toLocaleString() + ' MT' : 'FREE ACCESS'}</span>
                 </div>
             `).join('');
+        }
+
+        function updateStats() {
+            const totalValue = allProducts.reduce((acc, p) => acc + (p.price || 0), 0);
+            const totalClicks = allProducts.reduce((acc, p) => acc + (p.clicks || 0), 0);
+            
+            document.getElementById('stat-total').innerText = allProducts.length;
+            document.getElementById('stat-value').innerText = totalValue.toLocaleString() + " MT";
+            document.getElementById('stat-clicks').innerText = totalClicks;
         }
 
         async function saveProduct() {
@@ -185,25 +231,15 @@
             let coverUrl = document.getElementById('p-cover-url').value;
 
             btn.disabled = true;
-            btn.innerHTML = `<span class="loader"></span> PROCESSANDO...`;
+            btn.innerHTML = `<span class="loader"></span> SINCRONIZANDO...`;
 
             try {
-                // Lógica de Upload de Imagem
                 if (fileInput.files.length > 0) {
                     const file = fileInput.files[0];
-                    const fileExt = file.name.split('.').pop();
-                    const fileName = `${Date.now()}.${fileExt}`;
-                    
-                    const { data: uploadData, error: uploadError } = await sbClient.storage
-                        .from('produtos')
-                        .upload(fileName, file);
-
+                    const fileName = `${Date.now()}_${file.name.replace(/\s/g, '_')}`;
+                    const { data: uploadData, error: uploadError } = await sbClient.storage.from('produtos').upload(fileName, file);
                     if (uploadError) throw uploadError;
-
-                    const { data: publicUrl } = sbClient.storage
-                        .from('produtos')
-                        .getPublicUrl(fileName);
-                    
+                    const { data: publicUrl } = sbClient.storage.from('produtos').getPublicUrl(fileName);
                     coverUrl = publicUrl.publicUrl;
                 }
 
@@ -222,12 +258,12 @@
 
                 if (res.error) throw res.error;
 
-                alert("Sincronizado com Sucesso!");
                 resetForm();
                 await fetchData();
                 if(!document.getElementById('admin-view').classList.contains('hidden')) loadAdminDashboard();
+                alert("Ativo digital sincronizado com sucesso.");
             } catch (err) {
-                alert("Erro Fatal: " + err.message);
+                alert("Erro de Sistema: " + err.message);
             } finally {
                 btn.disabled = false;
                 btn.innerText = "Publicar no Stock";
@@ -237,13 +273,18 @@
         async function loadAdminDashboard() {
             const table = document.getElementById('admin-items-table');
             table.innerHTML = allProducts.map(p => `
-                <tr class="hover:bg-white/5 transition-all">
-                    <td class="p-6 font-bold text-xs uppercase">${p.title}</td>
-                    <td class="p-6 text-blue-500 font-black text-xs">${p.price} MT</td>
+                <tr class="hover:bg-white/5 transition-all group">
+                    <td class="p-6">
+                        <div class="flex items-center gap-4">
+                            <img src="${p.cover_url}" class="w-10 h-10 rounded-lg object-cover">
+                            <span class="font-bold text-xs uppercase tracking-tighter">${p.title}</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-blue-500 font-black text-xs">${p.price.toLocaleString()} MT</td>
                     <td class="p-6 text-center">
-                        <div class="flex justify-center gap-5">
-                            <button onclick="editProduct('${p.id}')" class="text-amber-500 hover:scale-125 transition-all"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick="deleteItem('${p.id}')" class="text-red-500 hover:scale-125 transition-all"><i class="fa-solid fa-trash"></i></button>
+                        <div class="flex justify-center gap-6">
+                            <button onclick="editProduct('${p.id}')" class="text-slate-500 hover:text-amber-500 transition-all"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deleteItem('${p.id}')" class="text-slate-500 hover:text-red-500 transition-all"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </td>
                 </tr>
@@ -259,7 +300,6 @@
             document.getElementById('p-cover-url').value = p.cover_url;
             document.getElementById('p-link').value = p.download_url || '';
             document.getElementById('p-desc').value = p.descricao || '';
-            
             document.getElementById('form-title').innerText = "Editando Ativo";
             document.getElementById('btn-save').innerText = "Atualizar Ativo";
             document.getElementById('btn-cancel').classList.remove('hidden');
@@ -267,7 +307,7 @@
         }
 
         async function deleteItem(id) {
-            if (confirm("Remover permanentemente do stock industrial?")) {
+            if (confirm("Confirmar remoção permanente do ativo?")) {
                 const { error } = await sbClient.from('ebooks').delete().eq('id', id);
                 if (error) alert(error.message);
                 else { await fetchData(); loadAdminDashboard(); }
@@ -278,18 +318,37 @@
             editingId = null;
             ['p-title', 'p-price', 'p-link', 'p-desc', 'p-cover-url'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('p-file').value = '';
-            document.getElementById('form-title').innerText = "Novo Ativo";
+            document.getElementById('form-title').innerText = "Novo Ativo Digital";
             document.getElementById('btn-save').innerText = "Publicar no Stock";
             document.getElementById('btn-cancel').classList.add('hidden');
         }
 
-        function openDetails(id) {
+        async function openDetails(id) {
             const p = allProducts.find(x => x.id === id);
+            
+            // Incrementar clique no Supabase (Estatística)
+            await sbClient.from('ebooks').update({ clicks: (p.clicks || 0) + 1 }).eq('id', id);
+
             document.getElementById('det-img').src = p.cover_url || 'https://via.placeholder.com/400';
             document.getElementById('det-title').innerText = p.title;
-            document.getElementById('det-price').innerText = p.price > 0 ? p.price.toLocaleString() + " MT" : "GRÁTIS";
-            document.getElementById('det-desc').innerText = p.descricao || "Este ativo passou pelos testes de qualidade CB Business.";
-            document.getElementById('det-download-btn').onclick = () => window.open(p.download_url, '_blank');
+            document.getElementById('det-price').innerText = p.price > 0 ? p.price.toLocaleString() + " MT" : "ACESSO GRATUITO";
+            document.getElementById('det-desc').innerText = p.descricao || "Ativo digital de alta performance, verificado pela CB Business Elite.";
+            
+            // SISTEMA DE FATURAÇÃO WHATSAPP
+            document.getElementById('det-download-btn').onclick = () => {
+                const msg = encodeURIComponent(
+                    `*CB BUSINESS - REQUISIÇÃO DE ATIVO*\n` +
+                    `------------------------------------\n` +
+                    `*PRODUTO:* ${p.title}\n` +
+                    `*VALOR:* ${p.price > 0 ? p.price.toLocaleString() + ' MT' : 'GRÁTIS'}\n` +
+                    `------------------------------------\n` +
+                    `Olá! Gostaria de processar o pagamento deste ativo para obter o acesso imediato.`
+                );
+                
+                if(p.price === 0) window.open(p.download_url, '_blank');
+                else window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
+            };
+
             document.getElementById('details-modal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
@@ -308,6 +367,7 @@
             ['public', 'login', 'admin'].forEach(view => document.getElementById(view + '-view').classList.add('hidden'));
             document.getElementById(v + '-view').classList.remove('hidden');
             if(v === 'admin') loadAdminDashboard();
+            window.scrollTo(0,0);
         }
 
         function filterItems(type) {
@@ -316,7 +376,7 @@
 
         function doMasterLogin() {
             if(document.getElementById('master-key').value === "Administrador-Profissional") toggleView('admin');
-            else alert("Chave Recusada.");
+            else alert("ACESSO NEGADO: CHAVE DE SEGURANÇA INVÁLIDA.");
         }
 
         function initParticles() {
@@ -325,12 +385,12 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             let particles = [];
-            for(let i=0; i<40; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*0.3 });
+            for(let i=0; i<50; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*0.5 });
             function anim() {
                 ctx.clearRect(0,0,canvas.width, canvas.height);
                 ctx.fillStyle = "rgba(255,255,255,0.05)";
                 particles.forEach(p => {
-                    ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath(); ctx.arc(p.x, p.y, 0.8, 0, Math.PI*2); ctx.fill();
                     p.y -= p.s; if(p.y < 0) p.y = canvas.height;
                 });
                 requestAnimationFrame(anim);
