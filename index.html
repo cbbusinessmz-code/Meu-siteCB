@@ -11,8 +11,9 @@
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
         
         :root { 
-            --primary: #3b82f6; 
-            --accent: #6366f1; 
+            /* Cores baseadas no logo: Vermelho e Azul */
+            --primary: #2563eb; 
+            --accent: #dc2626; 
             --bg: #020617; 
             --card-bg: rgba(255, 255, 255, 0.03);
         }
@@ -25,8 +26,7 @@
             overflow-x: hidden; 
         }
 
-        /* Estética Elite */
-        .glass-nav { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .premium-card { 
             background: var(--card-bg); 
             border: 1px solid rgba(255, 255, 255, 0.05); 
@@ -34,7 +34,7 @@
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
         }
         .premium-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
+            transform: translateY(-10px); 
             border-color: var(--primary);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
@@ -46,18 +46,17 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #2563eb, #6366f1);
+            background: linear-gradient(135deg, #2563eb, #1e40af);
             transition: all 0.3s ease;
         }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
 
-        /* Sidebar & Modals */
         #cart-sidebar { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5000; }
         .cart-open { transform: translateX(0) !important; }
+        .modal-blur { backdrop-filter: blur(12px); background: rgba(0, 0, 0, 0.9); z-index: 6000; }
         
-        .modal-blur { backdrop-filter: blur(12px); background: rgba(0, 0, 0, 0.8); }
-
-        /* Scrollbar */
+        .logo-img { height: 45px; width: auto; object-fit: contain; }
+        
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
@@ -65,39 +64,44 @@
 </head>
 <body>
 
-    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-40"></canvas>
+    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-30"></canvas>
 
-    <nav class="fixed top-0 w-full z-[1000] glass-nav py-5 px-6 md:px-20 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[1000] glass-nav py-4 px-6 md:px-20 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30">
-                <i class="fa-solid fa-bolt text-white"></i>
-            </div>
-            <span class="text-xl font-extrabold tracking-tighter uppercase">CB <span class="text-blue-500 font-medium">BUSINESS</span></span>
+            <img src="https://i.imgur.com/G3G6oYF.jpeg" alt="CB Business Logo" class="logo-img rounded-md">
+            <span class="text-xl font-extrabold tracking-tighter uppercase hidden md:block">CB <span class="text-blue-500 font-medium">BUSINESS</span></span>
         </div>
         
         <div class="flex items-center gap-6">
+            <a href="https://www.facebook.com/profile.php?id=100064778200015&mibextid=ZbWKwL" target="_blank" class="text-slate-400 hover:text-blue-500 transition-colors text-xl">
+                <i class="fa-brands fa-facebook"></i>
+            </a>
             <button onclick="toggleCart()" class="relative bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold hidden">0</span>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold hidden">0</span>
             </button>
-            <button onclick="toggleView('login')" class="opacity-40 hover:opacity-100 transition-all text-sm uppercase font-bold tracking-widest">Acesso Elite</button>
+            <button onclick="toggleView('login')" class="opacity-60 hover:opacity-100 transition-all text-[10px] uppercase font-black tracking-widest border border-white/20 px-4 py-2 rounded-lg">Acesso Elite</button>
         </div>
     </nav>
 
     <main id="app">
         <div id="public-view" class="pt-40 pb-20">
             <section class="max-w-5xl mx-auto px-6 mb-20 text-center">
-                <span class="text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">Fintech & Ativos Digitais</span>
-                <h1 class="text-5xl md:text-7xl font-black mb-6 gradient-text leading-tight">Elite Digital Gateway</h1>
+                <span class="text-red-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">Fintech & Ativos Digitais em Moçambique</span>
+                <h1 class="text-5xl md:text-7xl font-black mb-6 gradient-text leading-tight">Soluções Digitais de Alta Performance</h1>
                 <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                    Simplificando pagamentos digitais em Moçambique. Aceite <strong>M-Pesa, eMola, mKesh</strong> e cartões numa única plataforma de alta performance.
+                    Conectamos o seu negócio ao futuro. Gestão de pagamentos via <strong>M-Pesa, eMola e mKesh</strong> com segurança bancária e rapidez instantânea.
                 </p>
+                <div class="mt-10 flex flex-wrap justify-center gap-4">
+                    <button onclick="document.getElementById('catalog').scrollIntoView()" class="btn-primary px-8 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest">Explorar Catálogo</button>
+                    <button onclick="openInfo('sobre')" class="bg-white/5 border border-white/10 px-8 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest hover:bg-white/10">Nossa Missão</button>
+                </div>
             </section>
 
-            <section class="max-w-7xl mx-auto px-6">
+            <section id="catalog" class="max-w-7xl mx-auto px-6">
                 <div class="flex gap-4 mb-12 overflow-x-auto pb-4 no-scrollbar">
-                    <button onclick="filterItems('all')" class="bg-blue-600 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider shadow-lg shadow-blue-600/20">Todos Ativos</button>
-                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">Aplicações</button>
+                    <button onclick="filterItems('all')" class="bg-blue-600 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider shadow-lg shadow-blue-600/20">Todos</button>
+                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">Sistemas</button>
                     <button onclick="filterItems('ebook')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">E-Books</button>
                 </div>
 
@@ -106,28 +110,25 @@
             </section>
         </div>
 
-        <div id="admin-view" class="hidden min-h-screen pt-40 px-6">
+        <div id="admin-view" class="hidden min-h-screen pt-40 px-6 bg-slate-950">
             <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 pb-20">
                 <div class="lg:col-span-1 bg-white/5 p-8 rounded-[2rem] border border-white/10">
-                    <h3 class="font-black text-blue-500 uppercase text-xs mb-8 tracking-widest">Gestão de Inventário</h3>
+                    <h3 class="font-black text-blue-500 uppercase text-xs mb-8 tracking-widest">Painel Administrativo</h3>
                     <div class="space-y-4">
-                        <input type="text" id="p-title" placeholder="Nome do Produto" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 focus:border-blue-500 transition-all">
-                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
-                        <select id="p-type" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
+                        <input type="text" id="p-title" placeholder="Nome do Ativo" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 focus:border-blue-500 outline-none">
+                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
+                        <select id="p-type" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
                             <option value="app">Sistema / Aplicação</option>
-                            <option value="ebook">Conteúdo Digital / E-book</option>
+                            <option value="ebook">E-book / Curso</option>
                         </select>
-                        <div class="p-4 border border-dashed border-white/20 rounded-xl">
-                            <input type="file" id="p-file" class="text-[10px] w-full">
-                        </div>
-                        <input type="text" id="p-link" placeholder="URL Segura de Download" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
-                        <textarea id="p-desc" placeholder="Breve descrição dos benefícios..." class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 h-32"></textarea>
-                        <button onclick="saveProduct()" id="btn-save" class="w-full btn-primary py-4 rounded-xl font-bold uppercase text-[11px] tracking-widest">Publicar no Ecossistema</button>
-                        <button onclick="toggleView('public')" class="w-full py-2 text-[10px] uppercase font-black opacity-30 hover:opacity-100 transition-all">Cancelar Operação</button>
+                        <input type="text" id="p-link" placeholder="Link de Entrega" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
+                        <textarea id="p-desc" placeholder="Descrição profissional..." class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 h-32 outline-none"></textarea>
+                        <button onclick="saveProduct()" id="btn-save" class="w-full btn-primary py-4 rounded-xl font-bold uppercase text-[11px] tracking-widest">Publicar Agora</button>
+                        <button onclick="toggleView('public')" class="w-full py-2 text-[10px] uppercase font-black opacity-30 hover:opacity-100 transition-all">Sair do Painel</button>
                     </div>
                 </div>
                 <div class="lg:col-span-2 bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden">
-                    <div class="p-6 border-b border-white/5 bg-white/5 font-black uppercase text-[10px] tracking-widest text-slate-500">Stock Ativo</div>
+                    <div class="p-6 border-b border-white/5 bg-white/5 font-black uppercase text-[10px] tracking-widest text-slate-500">Gestão de Inventário Atual</div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
                             <tbody id="admin-items-table"></tbody>
@@ -139,59 +140,62 @@
 
         <div id="login-view" class="hidden min-h-screen flex items-center justify-center bg-black/50 backdrop-blur-xl">
             <div class="bg-slate-900 p-12 rounded-[3rem] border border-white/10 w-96 text-center shadow-2xl">
-                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-600/30">
-                    <i class="fa-solid fa-lock text-2xl"></i>
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <i class="fa-solid fa-shield-halved text-2xl"></i>
                 </div>
-                <h2 class="font-black uppercase tracking-widest mb-2">Master Authentication</h2>
-                <p class="text-slate-500 text-[10px] mb-8 uppercase tracking-tighter">Apenas administradores CB Business</p>
-                <input type="password" id="master-key" placeholder="••••••••" class="w-full mb-4 p-4 rounded-2xl text-center tracking-[0.5em] bg-black/40 border border-white/10 focus:border-blue-500 outline-none">
+                <h2 class="font-black uppercase tracking-widest mb-2">Autenticação Master</h2>
+                <p class="text-slate-500 text-[10px] mb-8 uppercase">Acesso restrito a administradores CB Business</p>
+                <input type="password" id="master-key" placeholder="CHAVE DE ACESSO" class="w-full mb-4 p-4 rounded-2xl text-center tracking-[0.5em] bg-black/40 border border-white/10 focus:border-blue-500 outline-none text-white">
                 <button onclick="doMasterLogin()" class="w-full btn-primary py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Entrar no Terminal</button>
             </div>
         </div>
     </main>
 
-    <footer class="bg-black/80 border-t border-white/5 pt-20 pb-10">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
-            <div>
-                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Produto</h4>
-                <ul class="space-y-3 text-slate-400 text-sm">
-                    <li class="hover:text-white cursor-pointer transition-colors">Funcionalidades</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Planos</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Comissões</li>
-                </ul>
+    <footer class="bg-black border-t border-white/5 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div class="col-span-1 md:col-span-1">
+                <img src="https://i.imgur.com/G3G6oYF.jpeg" alt="Logo" class="h-12 mb-6 rounded">
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">Líderes em infraestrutura de pagamentos digitais e ativos de alta conversão em Moçambique.</p>
+                <div class="flex gap-4">
+                    <a href="https://www.facebook.com/profile.php?id=100064778200015" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all">
+                        <i class="fa-brands fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-green-600 transition-all">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                    </a>
+                </div>
             </div>
             <div>
                 <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Empresa</h4>
                 <ul class="space-y-3 text-slate-400 text-sm">
-                    <li class="hover:text-white cursor-pointer transition-colors">Sobre Nós</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Clientes</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Conformidade</li>
+                    <li onclick="openInfo('sobre')" class="hover:text-white cursor-pointer transition-colors">Sobre Nós</li>
+                    <li onclick="openInfo('clientes')" class="hover:text-white cursor-pointer transition-colors">Clientes & Parceiros</li>
+                    <li onclick="openInfo('conformidade')" class="hover:text-white cursor-pointer transition-colors">Conformidade Legal</li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Recursos</h4>
                 <ul class="space-y-3 text-slate-400 text-sm">
-                    <li class="hover:text-white cursor-pointer transition-colors">FAQ</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Como Funciona</li>
+                    <li onclick="openInfo('faq')" class="hover:text-white cursor-pointer transition-colors">FAQ (Dúvidas)</li>
+                    <li onclick="openInfo('funcionalidades')" class="hover:text-white cursor-pointer transition-colors">Funcionalidades</li>
                 </ul>
             </div>
             <div>
                 <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Legal</h4>
                 <ul class="space-y-3 text-slate-400 text-sm">
-                    <li class="hover:text-white cursor-pointer transition-colors">Termos de Serviço</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Privacidade</li>
-                    <li class="hover:text-white cursor-pointer transition-colors">Segurança</li>
+                    <li onclick="openInfo('privacidade')" class="hover:text-white cursor-pointer transition-colors">Privacidade</li>
+                    <li onclick="openInfo('seguranca')" class="hover:text-white cursor-pointer transition-colors">Segurança Cibernética</li>
                 </ul>
             </div>
         </div>
         <div class="text-center border-t border-white/5 pt-10">
-            <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold">&copy; 2024 CB Business Moçambique - Elite Digital Solutions</p>
+            <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold">&copy; 2026 CB Business Moçambique - Elite Digital Gateway</p>
         </div>
     </footer>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#020617] shadow-[-20px_0_50px_rgba(0,0,0,0.5)] translate-x-full flex flex-col border-l border-white/10 backdrop-blur-3xl">
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#020617] shadow-2xl translate-x-full flex flex-col border-l border-white/10 backdrop-blur-3xl">
         <div class="p-8 border-b border-white/5 flex justify-between items-center">
-            <h2 class="text-2xl font-black italic tracking-tighter">Cart <span class="text-blue-500">Elite</span></h2>
+            <h2 class="text-2xl font-black italic tracking-tighter">Meu <span class="text-blue-500">Carrinho</span></h2>
             <button onclick="toggleCart()" class="text-slate-500 hover:text-white transition-all"><i class="fa-solid fa-xmark text-2xl"></i></button>
         </div>
         <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
@@ -201,62 +205,58 @@
                 <span id="cart-total" class="text-3xl font-black text-white">0 MT</span>
             </div>
             <button onclick="checkoutWhatsApp()" class="w-full btn-primary py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] flex items-center justify-center gap-3">
-                <i class="fa-brands fa-whatsapp text-xl"></i>
-                Proceder ao Pagamento
+                <i class="fa-brands fa-whatsapp text-xl"></i> Finalizar no WhatsApp
             </button>
         </div>
     </div>
 
-    <div id="details-modal" class="hidden fixed inset-0 z-[6000] modal-blur p-4 md:p-10 flex items-center justify-center">
-        <div class="relative max-w-5xl w-full bg-[#0a0f1e] rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
-            <button onclick="closeDetails()" class="absolute top-6 right-6 z-10 w-12 h-12 bg-black/50 hover:bg-black rounded-full flex items-center justify-center transition-all border border-white/10">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div class="flex flex-col md:flex-row h-full">
-                <div class="md:w-1/2 relative bg-black">
-                    <img id="det-img" src="" class="w-full h-full object-cover opacity-80">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-transparent to-transparent"></div>
-                </div>
-                <div class="p-10 md:p-16 md:w-1/2 flex flex-col justify-center">
-                    <span id="det-tag" class="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4">Ativo Premium</span>
-                    <h2 id="det-title" class="text-4xl md:text-5xl font-black italic tracking-tighter mb-6 leading-none"></h2>
-                    <div class="flex items-center gap-4 mb-8">
-                        <span id="det-price" class="text-3xl font-light text-white"></span>
-                        <div class="h-4 w-[1px] bg-white/10"></div>
-                        <span class="text-[10px] text-green-500 font-bold uppercase tracking-widest"><i class="fa-solid fa-circle-check mr-2"></i>Verificado</span>
-                    </div>
-                    <p id="det-desc" class="text-slate-400 leading-relaxed text-sm mb-10"></p>
-                    
-                    <div class="grid grid-cols-2 gap-4 mb-10">
-                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                            <i class="fa-solid fa-bolt text-blue-500 mb-2"></i>
-                            <p class="text-[9px] uppercase font-bold text-slate-500">Acesso</p>
-                            <p class="text-[11px] font-bold">Instantâneo</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
-                            <i class="fa-solid fa-shield-halved text-blue-500 mb-2"></i>
-                            <p class="text-[9px] uppercase font-bold text-slate-500">Suporte</p>
-                            <p class="text-[11px] font-bold">24/7 Elite</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-auto">
-                        <button id="add-to-cart-btn" class="w-full btn-primary py-5 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-xl shadow-blue-600/20">
-                            Adicionar ao Carrinho
-                        </button>
-                    </div>
-                </div>
-            </div>
+    <div id="info-modal" class="hidden fixed inset-0 modal-blur flex items-center justify-center p-6">
+        <div class="bg-slate-900 border border-white/10 max-w-2xl w-full rounded-[2.5rem] p-10 relative max-h-[80vh] overflow-y-auto">
+            <button onclick="closeInfo()" class="absolute top-6 right-6 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <div id="info-content"></div>
         </div>
     </div>
 
     <script>
-        // Supabase Config (Mantendo sua configuração)
+        // Configuração Supabase
         const SUPABASE_URL = 'https://godaswedwiopldcaeuvq.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_BZ4EUkworgGfHC5-gdw3iQ_MF4FfLnT';
         const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let allProducts = [], cart = [];
+
+        // Mensagens Profissionais para os campos
+        const infoData = {
+            sobre: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Sobre a CB Business</h2>
+                    <p class="text-slate-300 mb-4">A CB Business é uma fintech moçambicana de elite dedicada a democratizar o acesso a ativos digitais e infraestrutura de pagamentos de alta performance.</p>
+                    <p class="text-slate-300">Nossa missão é fornecer ferramentas que permitam a empreendedores locais escalar seus negócios usando tecnologia de ponta e sistemas validados internacionalmente.</p>`,
+            funcionalidades: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Funcionalidades Elite</h2>
+                    <ul class="space-y-4 text-slate-300">
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Gateway Multi-Pagamento (M-Pesa, eMola, mKesh)</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Dashboard de Vendas em Tempo Real</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> API de Integração para E-commerce</li>
+                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Entrega Automática de Produtos Digitais</li>
+                    </ul>`,
+            faq: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Perguntas Frequentes</h2>
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-white font-bold mb-2">Como recebo meu produto?</h4>
+                            <p class="text-slate-400 text-sm">Após a confirmação do pagamento via WhatsApp ou Gateway, você recebe o link de download instantaneamente.</p>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold mb-2">Os sistemas têm garantia?</h4>
+                            <p class="text-slate-400 text-sm">Sim, oferecemos 30 dias de suporte técnico especializado para todos os softwares adquiridos.</p>
+                        </div>
+                    </div>`,
+            privacidade: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Segurança & Privacidade</h2>
+                    <p class="text-slate-300 text-sm leading-relaxed">Na CB Business, a segurança dos seus dados é nossa prioridade absoluta. Utilizamos criptografia de ponta a ponta (AES-256) em todas as transações. Seus dados bancários nunca são armazenados em nossos servidores, sendo processados diretamente pelas operadoras móveis.</p>`,
+            clientes: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Nossos Clientes</h2>
+                    <p class="text-slate-300">Atendemos desde freelancers individuais até grandes players do e-commerce em Moçambique, processando milhares de transações mensais com 99.9% de uptime.</p>`,
+            conformidade: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Conformidade</h2>
+                    <p class="text-slate-300">Operamos em estrita conformidade com as regulamentações do Banco de Moçambique e as leis de proteção de dados eletrônicos vigentes.</p>`,
+            seguranca: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Cyber Security</h2>
+                    <p class="text-slate-300">Nossa plataforma conta com proteção contra ataques DDoS, monitoramento de fraudes via IA e firewalls de última geração.</p>`
+        };
 
         async function init() {
             await fetchData();
@@ -273,17 +273,14 @@
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = items.map(p => `
                 <div class="premium-card p-5 group">
-                    <div class="relative overflow-hidden rounded-2xl mb-6 cursor-pointer" onclick="openDetails('${p.id}')">
-                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-[4/5] object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1">
-                        <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter">Explorar Ativo</span>
-                        </div>
+                    <div class="relative overflow-hidden rounded-2xl mb-6">
+                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-[4/5] object-cover transition-all duration-700 group-hover:scale-110">
                     </div>
-                    <p class="text-blue-500 text-[9px] font-black uppercase tracking-widest mb-1">${p.type}</p>
-                    <h3 class="font-bold text-sm uppercase mb-4 tracking-tight group-hover:text-blue-400 transition-colors">${p.title}</h3>
+                    <p class="text-red-500 text-[9px] font-black uppercase tracking-widest mb-1">${p.type}</p>
+                    <h3 class="font-bold text-sm uppercase mb-4 tracking-tight">${p.title}</h3>
                     <div class="flex justify-between items-center pt-4 border-t border-white/5">
                         <span class="text-white font-black text-lg">${p.price.toLocaleString()} <span class="text-[10px] text-slate-500">MT</span></span>
-                        <button onclick="addToCart('${p.id}')" class="bg-white/5 hover:bg-white hover:text-black w-10 h-10 rounded-full transition-all flex items-center justify-center">
+                        <button onclick="addToCart('${p.id}')" class="bg-blue-600 hover:bg-white hover:text-blue-600 w-10 h-10 rounded-full transition-all flex items-center justify-center">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                     </div>
@@ -292,17 +289,18 @@
         }
 
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('cart-open'); }
+        
+        function openInfo(key) {
+            document.getElementById('info-content').innerHTML = infoData[key];
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+        function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
 
         function addToCart(id) {
             const product = allProducts.find(p => p.id === id);
             if (!cart.find(item => item.id === id)) {
                 cart.push(product);
                 updateCartUI();
-                if(event) {
-                    const btn = event.currentTarget;
-                    btn.innerHTML = '<i class="fa-solid fa-check text-green-500"></i>';
-                    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-plus"></i>', 2000);
-                }
             }
         }
 
@@ -315,15 +313,14 @@
             countLabel.classList.toggle('hidden', cart.length === 0);
 
             container.innerHTML = cart.length === 0 ? 
-                `<div class="h-full flex flex-col items-center justify-center opacity-20"><i class="fa-solid fa-box-open text-5xl mb-4"></i><p class="text-xs font-black uppercase tracking-widest">Vazio</p></div>` :
+                `<div class="h-full flex flex-col items-center justify-center opacity-20"><p class="text-xs font-black uppercase tracking-widest">Carrinho Vazio</p></div>` :
                 cart.map(item => `
                     <div class="flex items-center gap-5 bg-white/5 p-4 rounded-2xl border border-white/10 group">
-                        <img src="${item.cover_url}" class="w-16 h-16 rounded-xl object-cover">
                         <div class="flex-1">
-                            <h4 class="text-[10px] font-black uppercase tracking-tighter mb-1">${item.title}</h4>
+                            <h4 class="text-[10px] font-black uppercase tracking-tighter mb-1 text-white">${item.title}</h4>
                             <p class="text-blue-500 font-bold text-xs">${item.price.toLocaleString()} MT</p>
                         </div>
-                        <button onclick="removeFromCart('${item.id}')" class="opacity-0 group-hover:opacity-100 text-red-500/50 hover:text-red-500 transition-all"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="removeFromCart('${item.id}')" class="text-red-500/50 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `).join('');
 
@@ -336,19 +333,6 @@
             updateCartUI();
         }
 
-        function openDetails(id) {
-            const p = allProducts.find(x => x.id === id);
-            document.getElementById('det-img').src = p.cover_url;
-            document.getElementById('det-title').innerText = p.title;
-            document.getElementById('det-price').innerText = p.price.toLocaleString() + " MT";
-            document.getElementById('det-desc').innerText = p.descricao || "Este ativo digital foi rigorosamente testado pela nossa equipe para garantir alta performance e escalabilidade em seus projetos.";
-            document.getElementById('det-tag').innerText = p.type === 'app' ? 'Software de Elite' : 'Conhecimento Estratégico';
-            document.getElementById('add-to-cart-btn').onclick = () => { addToCart(p.id); closeDetails(); toggleCart(); };
-            document.getElementById('details-modal').classList.remove('hidden');
-        }
-
-        function closeDetails() { document.getElementById('details-modal').classList.add('hidden'); }
-
         function toggleView(v) {
             ['public', 'login', 'admin'].forEach(view => document.getElementById(view + '-view').classList.add('hidden'));
             document.getElementById(v + '-view').classList.remove('hidden');
@@ -358,31 +342,24 @@
 
         function doMasterLogin() {
             if(document.getElementById('master-key').value === "Administrador-Profissional") toggleView('admin');
-            else alert("Chave de acesso inválida.");
+            else alert("Acesso Negado.");
         }
 
         async function loadAdminDashboard() {
             const table = document.getElementById('admin-items-table');
             table.innerHTML = allProducts.map(p => `
-                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
-                    <td class="p-6">
-                        <div class="flex items-center gap-4">
-                            <img src="${p.cover_url}" class="w-10 h-10 rounded shadow-lg">
-                            <span class="font-bold uppercase tracking-tighter">${p.title}</span>
-                        </div>
-                    </td>
+                <tr class="border-b border-white/5">
+                    <td class="p-6 font-bold uppercase text-white">${p.title}</td>
                     <td class="p-6 text-blue-500 font-black">${p.price.toLocaleString()} MT</td>
                     <td class="p-6 text-right">
-                        <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
-                            <i class="fa-solid fa-trash text-[10px]"></i>
-                        </button>
+                        <button onclick="deleteProduct('${p.id}')" class="text-red-500 hover:text-white transition-all"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
         async function deleteProduct(id) {
-            if(confirm("Confirmar exclusão definitiva?")) {
+            if(confirm("Excluir definitivamente?")) {
                 await sbClient.from('ebooks').delete().eq('id', id);
                 await fetchData();
                 loadAdminDashboard();
@@ -391,22 +368,13 @@
 
         async function saveProduct() {
             const btn = document.getElementById('btn-save');
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processando...';
-            const file = document.getElementById('p-file').files[0];
-            let coverUrl = "https://via.placeholder.com/400";
-
-            if(file) {
-                const name = `${Date.now()}_${file.name}`;
-                await sbClient.storage.from('produtos').upload(name, file);
-                const { data } = sbClient.storage.from('produtos').getPublicUrl(name);
-                coverUrl = data.publicUrl;
-            }
-
+            btn.innerHTML = 'Publicando...';
+            
             await sbClient.from('ebooks').insert([{
                 title: document.getElementById('p-title').value,
                 price: parseFloat(document.getElementById('p-price').value),
                 type: document.getElementById('p-type').value,
-                cover_url: coverUrl,
+                cover_url: "https://via.placeholder.com/400",
                 download_url: document.getElementById('p-link').value,
                 descricao: document.getElementById('p-desc').value
             }]);
@@ -422,11 +390,10 @@
             if (cart.length === 0) return;
             const itensStr = cart.map(item => `- *${item.title}* (${item.price.toLocaleString()} MT)`).join('%0A');
             const total = cart.reduce((acc, item) => acc + item.price, 0);
-            const msg = `*NOVA ORDEM DE SERVIÇO - CB BUSINESS*%0A%0A` +
-                        `*ITENS SELECIONADOS:*%0A${itensStr}%0A%0A` +
-                        `*TOTAL:* ${total.toLocaleString()} MT%0A` +
-                        `---------------------------%0A` +
-                        `Olá! Desejo realizar o pagamento destes ativos via Gateway Moçambique.`;
+            const msg = `*PEDIDO CB BUSINESS*%0A%0A` +
+                        `*ITENS:*%0A${itensStr}%0A%0A` +
+                        `*TOTAL:* ${total.toLocaleString()} MT%0A%0A` +
+                        `Olá! Gostaria de pagar via M-Pesa/eMola. Aguardo instruções.`;
             window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
         }
 
@@ -436,17 +403,17 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             let particles = [];
-            for(let i=0; i<50; i++) {
+            for(let i=0; i<40; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    speed: Math.random() * 0.3 + 0.1
+                    size: Math.random() * 2,
+                    speed: Math.random() * 0.2 + 0.1
                 });
             }
             function animate() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "rgba(59, 130, 246, 0.4)";
+                ctx.fillStyle = "rgba(59, 130, 246, 0.2)";
                 particles.forEach(p => {
                     ctx.beginPath();
                     ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
