@@ -3,285 +3,237 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CB Business | Pagamentos Digitais de Elite</title>
+    <title>CB Business | Elite Digital Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap');
         
         :root { 
-            /* Cores baseadas no logo: Vermelho e Azul */
-            --primary: #2563eb; 
-            --accent: #dc2626; 
-            --bg: #020617; 
-            --card-bg: rgba(255, 255, 255, 0.03);
+            --primary: #3b82f6; 
+            --bg: #05070a; 
+            --card-bg: rgba(255, 255, 255, 0.02);
         }
 
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background-color: var(--bg); 
-            color: #f8fafc; 
-            scroll-behavior: smooth; 
-            overflow-x: hidden; 
+            color: #e2e8f0; 
+            overflow-x: hidden;
         }
 
-        .glass-nav { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-nav { background: rgba(5, 7, 10, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        
         .premium-card { 
             background: var(--card-bg); 
             border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 1.5rem; 
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        
         .premium-card:hover { 
-            transform: translateY(-10px); 
+            background: rgba(255, 255, 255, 0.04);
             border-color: var(--primary);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        }
-        
-        .gradient-text { 
-            background: linear-gradient(135deg, #fff 30%, #3b82f6 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+            transform: translateY(-5px);
         }
 
-        .btn-primary {
-            background: linear-gradient(135deg, #2563eb, #1e40af);
-            transition: all 0.3s ease;
+        .btn-elite {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            transition: all 0.4s ease;
+            letter-spacing: 1px;
         }
 
-        #cart-sidebar { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5000; }
+        .btn-elite:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+            transform: scale(1.02);
+        }
+
+        #cart-sidebar { transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1); z-index: 9999; }
         .cart-open { transform: translateX(0) !important; }
-        .modal-blur { backdrop-filter: blur(12px); background: rgba(0, 0, 0, 0.9); z-index: 6000; }
-        
-        .logo-img { height: 45px; width: auto; object-fit: contain; }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+        .step-inactive { opacity: 0.3; filter: grayscale(1); pointer-events: none; }
     </style>
 </head>
 <body>
 
-    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-30"></canvas>
-
     <nav class="fixed top-0 w-full z-[1000] glass-nav py-4 px-6 md:px-20 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-            <img src="https://i.imgur.com/G3G6oYF.jpeg" alt="CB Business Logo" class="logo-img rounded-md">
-            <span class="text-xl font-extrabold tracking-tighter uppercase hidden md:block">CB <span class="text-blue-500 font-medium">BUSINESS</span></span>
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-xl shadow-lg shadow-blue-900/40">CB</div>
+            <span class="text-sm font-extrabold tracking-[0.2em] uppercase">Business</span>
         </div>
         
-        <div class="flex items-center gap-6">
-            <a href="https://www.facebook.com/profile.php?id=100064778200015&mibextid=ZbWKwL" target="_blank" class="text-slate-400 hover:text-blue-500 transition-colors text-xl">
-                <i class="fa-brands fa-facebook"></i>
-            </a>
-            <button onclick="toggleCart()" class="relative bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold hidden">0</span>
+        <div class="flex items-center gap-5">
+            <button onclick="toggleCart()" class="relative p-2 text-slate-400 hover:text-white transition-all">
+                <i class="fa-solid fa-bag-shopping text-xl"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold hidden">0</span>
             </button>
-            <button onclick="toggleView('login')" class="opacity-60 hover:opacity-100 transition-all text-[10px] uppercase font-black tracking-widest border border-white/20 px-4 py-2 rounded-lg">Acesso Elite</button>
+            <button onclick="toggleView('login')" class="text-slate-600 hover:text-blue-500 transition-all">
+                <i class="fa-solid fa-gear text-lg"></i>
+            </button>
         </div>
     </nav>
 
     <main id="app">
-        <div id="public-view" class="pt-40 pb-20">
-            <section class="max-w-5xl mx-auto px-6 mb-20 text-center">
-                <span class="text-red-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">Fintech & Ativos Digitais em Moçambique</span>
-                <h1 class="text-5xl md:text-7xl font-black mb-6 gradient-text leading-tight">Soluções Digitais de Alta Performance</h1>
-                <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
-                    Conectamos o seu negócio ao futuro. Gestão de pagamentos via <strong>M-Pesa, eMola e mKesh</strong> com segurança bancária e rapidez instantânea.
-                </p>
-                <div class="mt-10 flex flex-wrap justify-center gap-4">
-                    <button onclick="document.getElementById('catalog').scrollIntoView()" class="btn-primary px-8 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest">Explorar Catálogo</button>
-                    <button onclick="openInfo('sobre')" class="bg-white/5 border border-white/10 px-8 py-4 rounded-2xl font-bold uppercase text-xs tracking-widest hover:bg-white/10">Nossa Missão</button>
+        <div id="public-view" class="pt-32 pb-20">
+            <section class="max-w-6xl mx-auto px-6 text-center mb-24">
+                <div class="inline-block px-4 py-1 border border-blue-500/20 rounded-full mb-6 bg-blue-500/5">
+                    <span class="text-blue-400 text-[10px] font-bold uppercase tracking-[0.4em]">Mozambique Digital Assets</span>
+                </div>
+                <h1 class="text-4xl md:text-6xl font-extrabold mb-8 tracking-tighter">Sistemas e Conhecimento <br><span class="text-blue-500">de Próxima Geração.</span></h1>
+                
+                <div class="flex flex-wrap justify-center gap-3 opacity-60 grayscale hover:grayscale-0 transition-all">
+                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">M-PESA</div>
+                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">E-MOLA</div>
+                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">M-KESH</div>
                 </div>
             </section>
 
-            <section id="catalog" class="max-w-7xl mx-auto px-6">
-                <div class="flex gap-4 mb-12 overflow-x-auto pb-4 no-scrollbar">
-                    <button onclick="filterItems('all')" class="bg-blue-600 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider shadow-lg shadow-blue-600/20">Todos</button>
-                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">Sistemas</button>
-                    <button onclick="filterItems('ebook')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">E-Books</button>
-                </div>
-
-                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <section class="max-w-7xl mx-auto px-6">
+                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     </div>
+            </section>
+
+            <section class="max-w-3xl mx-auto px-6 mt-32">
+                <h2 class="text-center font-bold uppercase tracking-widest text-xs mb-10 text-slate-500">Perguntas Frequentes</h2>
+                <div class="space-y-4">
+                    <div class="p-6 bg-white/5 border border-white/10 rounded-2xl">
+                        <h4 class="font-bold text-sm mb-2">Como recebo o acesso?</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">Após o envio do comprovativo via WhatsApp, o sistema valida a transação e o link de download é libertado instantaneamente pelo nosso suporte.</p>
+                    </div>
+                </div>
             </section>
         </div>
 
-        <div id="admin-view" class="hidden min-h-screen pt-40 px-6 bg-slate-950">
-            <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 pb-20">
-                <div class="lg:col-span-1 bg-white/5 p-8 rounded-[2rem] border border-white/10">
-                    <h3 class="font-black text-blue-500 uppercase text-xs mb-8 tracking-widest">Painel Administrativo</h3>
-                    <div class="space-y-4">
-                        <input type="text" id="p-title" placeholder="Nome do Ativo" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 focus:border-blue-500 outline-none">
-                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
-                        <select id="p-type" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
-                            <option value="app">Sistema / Aplicação</option>
-                            <option value="ebook">E-book / Curso</option>
-                        </select>
-                        <input type="text" id="p-link" placeholder="Link de Entrega" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 outline-none">
-                        <textarea id="p-desc" placeholder="Descrição profissional..." class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 h-32 outline-none"></textarea>
-                        <button onclick="saveProduct()" id="btn-save" class="w-full btn-primary py-4 rounded-xl font-bold uppercase text-[11px] tracking-widest">Publicar Agora</button>
-                        <button onclick="toggleView('public')" class="w-full py-2 text-[10px] uppercase font-black opacity-30 hover:opacity-100 transition-all">Sair do Painel</button>
-                    </div>
-                </div>
-                <div class="lg:col-span-2 bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden">
-                    <div class="p-6 border-b border-white/5 bg-white/5 font-black uppercase text-[10px] tracking-widest text-slate-500">Gestão de Inventário Atual</div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs">
-                            <tbody id="admin-items-table"></tbody>
-                        </table>
-                    </div>
-                </div>
+        <div id="login-view" class="hidden min-h-screen flex items-center justify-center p-6">
+            <div class="w-full max-w-sm bg-white/5 p-10 rounded-[2rem] border border-white/10 text-center">
+                <i class="fa-solid fa-shield-halved text-3xl text-blue-500 mb-6"></i>
+                <h2 class="font-bold mb-8 uppercase tracking-widest text-sm">Terminal do Administrador</h2>
+                <input type="password" id="master-key" placeholder="Acesso Privado" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl mb-4 text-center outline-none focus:border-blue-500 transition-all">
+                <button onclick="doMasterLogin()" class="w-full btn-elite py-4 rounded-xl font-bold text-xs uppercase">Autenticar</button>
+                <button onclick="toggleView('public')" class="mt-6 text-[10px] uppercase opacity-40 hover:opacity-100">Voltar ao Site</button>
             </div>
         </div>
 
-        <div id="login-view" class="hidden min-h-screen flex items-center justify-center bg-black/50 backdrop-blur-xl">
-            <div class="bg-slate-900 p-12 rounded-[3rem] border border-white/10 w-96 text-center shadow-2xl">
-                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+        <div id="admin-view" class="hidden pt-32 px-6 pb-20">
+            <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white/5 p-8 rounded-[2rem] border border-white/10">
+                        <h3 class="text-xs font-bold uppercase mb-6 text-blue-500">Novo Ativo</h3>
+                        <div class="space-y-3">
+                            <input type="text" id="p-title" placeholder="Título do Produto" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
+                            <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
+                            <input type="text" id="p-link" placeholder="Link de Entrega (WhatsApp)" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
+                            <select id="p-type" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none appearance-none">
+                                <option value="SISTEMA">SISTEMA / APP</option>
+                                <option value="EBOOK">E-BOOK ELITE</option>
+                            </select>
+                            <textarea id="p-desc" placeholder="Breve descrição dos benefícios..." class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs h-32 outline-none"></textarea>
+                            <button onclick="saveProduct()" class="w-full btn-elite py-4 rounded-xl font-bold text-[10px] uppercase">Publicar Ativo</button>
+                        </div>
+                    </div>
                 </div>
-                <h2 class="font-black uppercase tracking-widest mb-2">Autenticação Master</h2>
-                <p class="text-slate-500 text-[10px] mb-8 uppercase">Acesso restrito a administradores CB Business</p>
-                <input type="password" id="master-key" placeholder="CHAVE DE ACESSO" class="w-full mb-4 p-4 rounded-2xl text-center tracking-[0.5em] bg-black/40 border border-white/10 focus:border-blue-500 outline-none text-white">
-                <button onclick="doMasterLogin()" class="w-full btn-primary py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Entrar no Terminal</button>
+                <div class="lg:col-span-2 bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden">
+                    <table class="w-full text-left text-[10px] uppercase font-bold">
+                        <thead class="bg-white/5 text-slate-500">
+                            <tr>
+                                <th class="p-6">Produto</th>
+                                <th class="p-6">Preço</th>
+                                <th class="p-6 text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-items-table" class="divide-y divide-white/5"></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
 
-    <footer class="bg-black border-t border-white/5 pt-20 pb-10">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-            <div class="col-span-1 md:col-span-1">
-                <img src="https://i.imgur.com/G3G6oYF.jpeg" alt="Logo" class="h-12 mb-6 rounded">
-                <p class="text-slate-500 text-sm leading-relaxed mb-6">Líderes em infraestrutura de pagamentos digitais e ativos de alta conversão em Moçambique.</p>
-                <div class="flex gap-4">
-                    <a href="https://www.facebook.com/profile.php?id=100064778200015" target="_blank" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-blue-600 transition-all">
-                        <i class="fa-brands fa-facebook-f text-sm"></i>
-                    </a>
-                    <a href="#" class="w-10 h-10 bg-white/5 rounded-full flex items-center justify-center hover:bg-green-600 transition-all">
-                        <i class="fa-brands fa-whatsapp text-sm"></i>
-                    </a>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#05070a] border-l border-white/10 translate-x-full flex flex-col">
+        <div class="p-8 flex justify-between items-center border-b border-white/5">
+            <h2 class="text-xl font-bold tracking-tighter">Checkout <span class="text-blue-500">Business</span></h2>
+            <button onclick="toggleCart()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div id="cart-content" class="flex-1 overflow-y-auto p-8">
+            <div id="step-1" class="space-y-6">
+                <div id="cart-items-list" class="space-y-4"></div>
+            </div>
+
+            <div id="step-2" class="mt-10 pt-10 border-t border-white/5 step-inactive">
+                <h3 class="text-[10px] font-black uppercase text-blue-500 mb-4">2. Pagamento & Comprovativo</h3>
+                <div class="bg-white/5 p-4 rounded-xl mb-4 border border-blue-500/20">
+                    <p class="text-[10px] text-slate-400 mb-2">Envie o valor para:</p>
+                    <p class="text-sm font-bold">M-Pesa: 844606198 (CB)</p>
+                </div>
+                <div class="space-y-3">
+                    <input type="text" id="cust-phone" placeholder="Seu Número WhatsApp" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-xs outline-none">
+                    <div class="relative w-full h-12 bg-white/5 border border-dashed border-white/20 rounded-xl flex items-center justify-center cursor-pointer">
+                        <input type="file" class="absolute inset-0 opacity-0 cursor-pointer">
+                        <span class="text-[9px] uppercase font-bold text-slate-500">Anexar Comprovativo (Opcional)</span>
+                    </div>
                 </div>
             </div>
-            <div>
-                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Empresa</h4>
-                <ul class="space-y-3 text-slate-400 text-sm">
-                    <li onclick="openInfo('sobre')" class="hover:text-white cursor-pointer transition-colors">Sobre Nós</li>
-                    <li onclick="openInfo('clientes')" class="hover:text-white cursor-pointer transition-colors">Clientes & Parceiros</li>
-                    <li onclick="openInfo('conformidade')" class="hover:text-white cursor-pointer transition-colors">Conformidade Legal</li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Recursos</h4>
-                <ul class="space-y-3 text-slate-400 text-sm">
-                    <li onclick="openInfo('faq')" class="hover:text-white cursor-pointer transition-colors">FAQ (Dúvidas)</li>
-                    <li onclick="openInfo('funcionalidades')" class="hover:text-white cursor-pointer transition-colors">Funcionalidades</li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Legal</h4>
-                <ul class="space-y-3 text-slate-400 text-sm">
-                    <li onclick="openInfo('privacidade')" class="hover:text-white cursor-pointer transition-colors">Privacidade</li>
-                    <li onclick="openInfo('seguranca')" class="hover:text-white cursor-pointer transition-colors">Segurança Cibernética</li>
-                </ul>
-            </div>
         </div>
-        <div class="text-center border-t border-white/5 pt-10">
-            <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold">&copy; 2026 CB Business Moçambique - Elite Digital Gateway</p>
-        </div>
-    </footer>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#020617] shadow-2xl translate-x-full flex flex-col border-l border-white/10 backdrop-blur-3xl">
-        <div class="p-8 border-b border-white/5 flex justify-between items-center">
-            <h2 class="text-2xl font-black italic tracking-tighter">Meu <span class="text-blue-500">Carrinho</span></h2>
-            <button onclick="toggleCart()" class="text-slate-500 hover:text-white transition-all"><i class="fa-solid fa-xmark text-2xl"></i></button>
-        </div>
-        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
         <div class="p-8 bg-white/5 border-t border-white/10">
-            <div class="flex justify-between items-end mb-8">
-                <span class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Subtotal:</span>
-                <span id="cart-total" class="text-3xl font-black text-white">0 MT</span>
+            <div class="flex justify-between items-end mb-6">
+                <span class="text-[10px] font-bold text-slate-500 uppercase">Total Geral</span>
+                <span id="cart-total" class="text-2xl font-bold">0 MT</span>
             </div>
-            <button onclick="checkoutWhatsApp()" class="w-full btn-primary py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] flex items-center justify-center gap-3">
-                <i class="fa-brands fa-whatsapp text-xl"></i> Finalizar no WhatsApp
+            <button id="checkout-btn" onclick="nextStep()" class="w-full btn-elite py-5 rounded-2xl font-bold text-xs uppercase flex items-center justify-center gap-3">
+                Continuar Compra <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <div id="info-modal" class="hidden fixed inset-0 modal-blur flex items-center justify-center p-6">
-        <div class="bg-slate-900 border border-white/10 max-w-2xl w-full rounded-[2.5rem] p-10 relative max-h-[80vh] overflow-y-auto">
-            <button onclick="closeInfo()" class="absolute top-6 right-6 text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <div id="info-content"></div>
+    <footer class="mt-20 py-10 border-t border-white/5 text-center">
+        <div class="flex justify-center gap-6 mb-6">
+            <img src="https://img.icons8.com/color/48/visa.png" class="h-5 opacity-30">
+            <img src="https://img.icons8.com/color/48/mastercard.png" class="h-5 opacity-30">
+            <i class="fa-solid fa-shield-halved text-slate-700"></i>
         </div>
-    </div>
+        <p class="text-[9px] text-slate-600 uppercase tracking-[0.3em]">© 2024 CB BUSINESS - Segurança Bancária Garantida</p>
+    </footer>
 
     <script>
-        // Configuração Supabase
         const SUPABASE_URL = 'https://godaswedwiopldcaeuvq.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_BZ4EUkworgGfHC5-gdw3iQ_MF4FfLnT';
         const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let allProducts = [], cart = [];
-
-        // Mensagens Profissionais para os campos
-        const infoData = {
-            sobre: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Sobre a CB Business</h2>
-                    <p class="text-slate-300 mb-4">A CB Business é uma fintech moçambicana de elite dedicada a democratizar o acesso a ativos digitais e infraestrutura de pagamentos de alta performance.</p>
-                    <p class="text-slate-300">Nossa missão é fornecer ferramentas que permitam a empreendedores locais escalar seus negócios usando tecnologia de ponta e sistemas validados internacionalmente.</p>`,
-            funcionalidades: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Funcionalidades Elite</h2>
-                    <ul class="space-y-4 text-slate-300">
-                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Gateway Multi-Pagamento (M-Pesa, eMola, mKesh)</li>
-                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Dashboard de Vendas em Tempo Real</li>
-                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> API de Integração para E-commerce</li>
-                        <li><i class="fa-solid fa-check text-blue-500 mr-2"></i> Entrega Automática de Produtos Digitais</li>
-                    </ul>`,
-            faq: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Perguntas Frequentes</h2>
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="text-white font-bold mb-2">Como recebo meu produto?</h4>
-                            <p class="text-slate-400 text-sm">Após a confirmação do pagamento via WhatsApp ou Gateway, você recebe o link de download instantaneamente.</p>
-                        </div>
-                        <div>
-                            <h4 class="text-white font-bold mb-2">Os sistemas têm garantia?</h4>
-                            <p class="text-slate-400 text-sm">Sim, oferecemos 30 dias de suporte técnico especializado para todos os softwares adquiridos.</p>
-                        </div>
-                    </div>`,
-            privacidade: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Segurança & Privacidade</h2>
-                    <p class="text-slate-300 text-sm leading-relaxed">Na CB Business, a segurança dos seus dados é nossa prioridade absoluta. Utilizamos criptografia de ponta a ponta (AES-256) em todas as transações. Seus dados bancários nunca são armazenados em nossos servidores, sendo processados diretamente pelas operadoras móveis.</p>`,
-            clientes: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Nossos Clientes</h2>
-                    <p class="text-slate-300">Atendemos desde freelancers individuais até grandes players do e-commerce em Moçambique, processando milhares de transações mensais com 99.9% de uptime.</p>`,
-            conformidade: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Conformidade</h2>
-                    <p class="text-slate-300">Operamos em estrita conformidade com as regulamentações do Banco de Moçambique e as leis de proteção de dados eletrônicos vigentes.</p>`,
-            seguranca: `<h2 class="text-3xl font-black mb-6 text-blue-500 uppercase italic">Cyber Security</h2>
-                    <p class="text-slate-300">Nossa plataforma conta com proteção contra ataques DDoS, monitoramento de fraudes via IA e firewalls de última geração.</p>`
-        };
+        let allProducts = [], cart = [], currentStep = 1;
 
         async function init() {
             await fetchData();
-            initParticles();
         }
 
         async function fetchData() {
             const { data } = await sbClient.from('ebooks').select('*').order('created_at', { ascending: false });
             allProducts = data || [];
             renderCatalog(allProducts);
+            renderAdminTable();
         }
 
         function renderCatalog(items) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = items.map(p => `
-                <div class="premium-card p-5 group">
-                    <div class="relative overflow-hidden rounded-2xl mb-6">
-                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-[4/5] object-cover transition-all duration-700 group-hover:scale-110">
+                <div class="premium-card p-4 rounded-3xl group">
+                    <div class="relative aspect-square overflow-hidden rounded-2xl mb-5 bg-black">
+                        <img src="${p.cover_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400'}" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
                     </div>
-                    <p class="text-red-500 text-[9px] font-black uppercase tracking-widest mb-1">${p.type}</p>
-                    <h3 class="font-bold text-sm uppercase mb-4 tracking-tight">${p.title}</h3>
-                    <div class="flex justify-between items-center pt-4 border-t border-white/5">
-                        <span class="text-white font-black text-lg">${p.price.toLocaleString()} <span class="text-[10px] text-slate-500">MT</span></span>
-                        <button onclick="addToCart('${p.id}')" class="bg-blue-600 hover:bg-white hover:text-blue-600 w-10 h-10 rounded-full transition-all flex items-center justify-center">
-                            <i class="fa-solid fa-plus"></i>
+                    <span class="text-blue-500 text-[8px] font-black tracking-widest uppercase">${p.type}</span>
+                    <h3 class="text-sm font-bold mt-1 mb-4 truncate">${p.title}</h3>
+                    <div class="flex justify-between items-center">
+                        <span class="text-lg font-bold">${p.price.toLocaleString()} <span class="text-[9px] opacity-40">MT</span></span>
+                        <button onclick="addToCart('${p.id}')" class="w-9 h-9 bg-white/5 rounded-full hover:bg-blue-600 transition-all flex items-center justify-center border border-white/10">
+                            <i class="fa-solid fa-plus text-xs"></i>
                         </button>
                     </div>
                 </div>
@@ -289,141 +241,114 @@
         }
 
         function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('cart-open'); }
-        
-        function openInfo(key) {
-            document.getElementById('info-content').innerHTML = infoData[key];
-            document.getElementById('info-modal').classList.remove('hidden');
-        }
-        function closeInfo() { document.getElementById('info-modal').classList.add('hidden'); }
 
         function addToCart(id) {
             const product = allProducts.find(p => p.id === id);
-            if (!cart.find(item => item.id === id)) {
+            if (!cart.find(i => i.id === id)) {
                 cart.push(product);
                 updateCartUI();
+                toggleCart();
             }
         }
 
         function updateCartUI() {
-            const container = document.getElementById('cart-items');
-            const countLabel = document.getElementById('cart-count');
-            const totalLabel = document.getElementById('cart-total');
-            
-            countLabel.innerText = cart.length;
-            countLabel.classList.toggle('hidden', cart.length === 0);
-
-            container.innerHTML = cart.length === 0 ? 
-                `<div class="h-full flex flex-col items-center justify-center opacity-20"><p class="text-xs font-black uppercase tracking-widest">Carrinho Vazio</p></div>` :
-                cart.map(item => `
-                    <div class="flex items-center gap-5 bg-white/5 p-4 rounded-2xl border border-white/10 group">
-                        <div class="flex-1">
-                            <h4 class="text-[10px] font-black uppercase tracking-tighter mb-1 text-white">${item.title}</h4>
-                            <p class="text-blue-500 font-bold text-xs">${item.price.toLocaleString()} MT</p>
-                        </div>
-                        <button onclick="removeFromCart('${item.id}')" class="text-red-500/50 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
-                    </div>
-                `).join('');
-
+            const list = document.getElementById('cart-items-list');
             const total = cart.reduce((acc, item) => acc + item.price, 0);
-            totalLabel.innerText = total.toLocaleString() + " MT";
+            document.getElementById('cart-count').innerText = cart.length;
+            document.getElementById('cart-count').classList.toggle('hidden', cart.length === 0);
+            document.getElementById('cart-total').innerText = total.toLocaleString() + " MT";
+
+            list.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-4 bg-white/5 p-3 rounded-xl border border-white/5">
+                    <div class="w-12 h-12 bg-black rounded-lg overflow-hidden flex-shrink-0">
+                        <img src="${item.cover_url}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="text-[10px] font-bold uppercase truncate w-32">${item.title}</h4>
+                        <p class="text-blue-500 text-[10px] font-bold">${item.price.toLocaleString()} MT</p>
+                    </div>
+                    <button onclick="removeFromCart('${item.id}')" class="text-slate-600 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            `).join('');
         }
 
         function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
+            cart = cart.filter(i => i.id !== id);
             updateCartUI();
+        }
+
+        function nextStep() {
+            if (cart.length === 0) return;
+            if (currentStep === 1) {
+                document.getElementById('step-2').classList.remove('step-inactive');
+                document.getElementById('checkout-btn').innerHTML = 'Finalizar no WhatsApp <i class="fa-brands fa-whatsapp ml-2"></i>';
+                currentStep = 2;
+            } else {
+                checkoutWhatsApp();
+            }
+        }
+
+        function checkoutWhatsApp() {
+            const phone = document.getElementById('cust-phone').value;
+            if (!phone) return alert("Por favor, insira o seu número de WhatsApp.");
+            
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            const itensStr = cart.map(i => `- ${i.title}`).join('%0A');
+            const linksStr = cart.map(i => `- ${i.title}: ${i.link_entrega || 'Link pendente'}`).join('%0A');
+
+            const msg = `*NOVA COMPRA ELITE - CB BUSINESS*%0A%0A` +
+                        `*CLIENTE:* ${phone}%0A` +
+                        `*VALOR TOTAL:* ${total.toLocaleString()} MT%0A%0A` +
+                        `*ITENS:*%0A${itensStr}%0A%0A` +
+                        `*LINKS PARA ENTREGA (Verificar Comprovativo):*%0A${linksStr}%0A%0A` +
+                        `_Estou enviando o comprovativo em anexo._`;
+
+            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
         }
 
         function toggleView(v) {
             ['public', 'login', 'admin'].forEach(view => document.getElementById(view + '-view').classList.add('hidden'));
             document.getElementById(v + '-view').classList.remove('hidden');
-            if(v === 'admin') loadAdminDashboard();
-            window.scrollTo(0,0);
         }
 
         function doMasterLogin() {
-            if(document.getElementById('master-key').value === "Administrador-Profissional") toggleView('admin');
-            else alert("Acesso Negado.");
+            if(document.getElementById('master-key').value === "admin") toggleView('admin');
+            else alert("Chave Incorreta.");
         }
 
-        async function loadAdminDashboard() {
+        async function saveProduct() {
+            const p = {
+                title: document.getElementById('p-title').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                type: document.getElementById('p-type').value,
+                descricao: document.getElementById('p-desc').value,
+                link_entrega: document.getElementById('p-link').value,
+                cover_url: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400'
+            };
+            
+            await sbClient.from('ebooks').insert([p]);
+            fetchData();
+            alert("Ativo publicado com sucesso!");
+        }
+
+        function renderAdminTable() {
             const table = document.getElementById('admin-items-table');
             table.innerHTML = allProducts.map(p => `
-                <tr class="border-b border-white/5">
-                    <td class="p-6 font-bold uppercase text-white">${p.title}</td>
-                    <td class="p-6 text-blue-500 font-black">${p.price.toLocaleString()} MT</td>
+                <tr>
+                    <td class="p-6">${p.title}</td>
+                    <td class="p-6">${p.price} MT</td>
                     <td class="p-6 text-right">
-                        <button onclick="deleteProduct('${p.id}')" class="text-red-500 hover:text-white transition-all"><i class="fa-solid fa-trash"></i></button>
+                        <button class="text-red-500 opacity-50 hover:opacity-100" onclick="deleteProduct('${p.id}')">Eliminar</button>
                     </td>
                 </tr>
             `).join('');
         }
 
         async function deleteProduct(id) {
-            if(confirm("Excluir definitivamente?")) {
+            if(confirm("Deseja remover este ativo?")) {
                 await sbClient.from('ebooks').delete().eq('id', id);
-                await fetchData();
-                loadAdminDashboard();
+                fetchData();
             }
-        }
-
-        async function saveProduct() {
-            const btn = document.getElementById('btn-save');
-            btn.innerHTML = 'Publicando...';
-            
-            await sbClient.from('ebooks').insert([{
-                title: document.getElementById('p-title').value,
-                price: parseFloat(document.getElementById('p-price').value),
-                type: document.getElementById('p-type').value,
-                cover_url: "https://via.placeholder.com/400",
-                download_url: document.getElementById('p-link').value,
-                descricao: document.getElementById('p-desc').value
-            }]);
-
-            location.reload();
-        }
-
-        function filterItems(type) {
-            renderCatalog(type === 'all' ? allProducts : allProducts.filter(p => p.type === type));
-        }
-
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return;
-            const itensStr = cart.map(item => `- *${item.title}* (${item.price.toLocaleString()} MT)`).join('%0A');
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            const msg = `*PEDIDO CB BUSINESS*%0A%0A` +
-                        `*ITENS:*%0A${itensStr}%0A%0A` +
-                        `*TOTAL:* ${total.toLocaleString()} MT%0A%0A` +
-                        `Olá! Gostaria de pagar via M-Pesa/eMola. Aguardo instruções.`;
-            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
-        }
-
-        function initParticles() {
-            const canvas = document.getElementById('particles-js');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            let particles = [];
-            for(let i=0; i<40; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    speed: Math.random() * 0.2 + 0.1
-                });
-            }
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "rgba(59, 130, 246, 0.2)";
-                particles.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                    ctx.fill();
-                    p.y -= p.speed;
-                    if(p.y < 0) p.y = canvas.height;
-                });
-                requestAnimationFrame(animate);
-            }
-            animate();
         }
 
         window.onload = init;
