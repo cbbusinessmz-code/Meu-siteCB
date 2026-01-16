@@ -3,140 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CB Business | Elite Store</title>
+    <title>CB Business | Pagamentos Digitais de Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://unpkg.com/@scrollreveal/scrollreveal"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        :root { --primary: #2563eb; --accent: #6366f1; --bg: #020617; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #f8fafc; scroll-behavior: smooth; overflow-x: hidden; }
         
-        .glass { background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        .premium-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 1.5rem; transition: 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
-        .premium-card:hover { transform: translateY(-8px); border-color: var(--primary); }
+        :root { 
+            --primary: #3b82f6; 
+            --accent: #6366f1; 
+            --bg: #020617; 
+            --card-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg); 
+            color: #f8fafc; 
+            scroll-behavior: smooth; 
+            overflow-x: hidden; 
+        }
+
+        /* Estética Elite */
+        .glass-nav { background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .premium-card { 
+            background: var(--card-bg); 
+            border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 1.5rem; 
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); 
+        }
+        .premium-card:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
         
-        /* Carrinho Lateral */
-        #cart-sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 3000; }
+        .gradient-text { 
+            background: linear-gradient(135deg, #fff 30%, #3b82f6 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3); }
+
+        /* Sidebar & Modals */
+        #cart-sidebar { transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 5000; }
         .cart-open { transform: translateX(0) !important; }
         
-        .cart-dot { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #020617; }
-        
-        .gradient-text { background: linear-gradient(135deg, #fff 40%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        input, select, textarea { background: rgba(255,255,255,0.03) !important; border: 1px solid rgba(255,255,255,0.1) !important; color: white !important; outline: none; }
+        .modal-blur { backdrop-filter: blur(12px); background: rgba(0, 0, 0, 0.8); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
 <body>
 
-    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-30"></canvas>
+    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-40"></canvas>
 
-    <nav class="fixed top-0 w-full z-[1000] glass py-4 px-6 md:px-20 flex justify-between items-center">
+    <nav class="fixed top-0 w-full z-[1000] glass-nav py-5 px-6 md:px-20 flex justify-between items-center">
         <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-bolt text-white"></i></div>
-            <span class="text-xl font-bold tracking-tighter uppercase">CB <span class="text-blue-500">Business</span></span>
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30">
+                <i class="fa-solid fa-bolt text-white"></i>
+            </div>
+            <span class="text-xl font-extrabold tracking-tighter uppercase">CB <span class="text-blue-500 font-medium">BUSINESS</span></span>
         </div>
         
         <div class="flex items-center gap-6">
-            <div class="hidden md:relative md:block">
-                <input type="text" id="search-bar" oninput="searchProducts()" placeholder="O que você procura?" class="pl-4 pr-10 py-2 rounded-full w-64 text-xs font-medium bg-white/5 border border-white/10">
-            </div>
             <button onclick="toggleCart()" class="relative bg-white/5 p-3 rounded-xl border border-white/10 hover:bg-white/10 transition-all">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-count" class="cart-dot hidden">0</span>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold hidden">0</span>
             </button>
-            <button onclick="toggleView('login')" class="opacity-30 hover:opacity-100 transition-all"><i class="fa-solid fa-shield-halved"></i></button>
+            <button onclick="toggleView('login')" class="opacity-40 hover:opacity-100 transition-all text-sm uppercase font-bold tracking-widest">Acesso Elite</button>
         </div>
     </nav>
 
     <main id="app">
-        <div id="public-view" class="pt-32 pb-20">
-            <section class="max-w-7xl mx-auto px-6 mb-16 text-center">
-                <h1 class="text-4xl md:text-6xl font-black mb-4 gradient-text uppercase italic tracking-tighter">Elite Digital Store</h1>
-                <p class="text-slate-500 text-sm uppercase tracking-widest font-bold">Adquira as melhores ferramentas e conhecimentos do mercado</p>
+        <div id="public-view" class="pt-40 pb-20">
+            <section class="max-w-5xl mx-auto px-6 mb-20 text-center">
+                <span class="text-blue-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">Fintech & Ativos Digitais</span>
+                <h1 class="text-5xl md:text-7xl font-black mb-6 gradient-text leading-tight">Elite Digital Gateway</h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+                    Simplificando pagamentos digitais em Moçambique. Aceite <strong>M-Pesa, eMola, mKesh</strong> e cartões numa única plataforma de alta performance.
+                </p>
             </section>
 
             <section class="max-w-7xl mx-auto px-6">
-                <div class="flex gap-4 mb-10 overflow-x-auto pb-4">
-                    <button onclick="filterItems('all')" class="bg-blue-600 px-6 py-2 rounded-full text-[10px] font-black uppercase whitespace-nowrap">Todos Ativos</button>
-                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase whitespace-nowrap hover:bg-white/10">Aplicações</button>
-                    <button onclick="filterItems('ebook')" class="bg-white/5 border border-white/10 px-6 py-2 rounded-full text-[10px] font-black uppercase whitespace-nowrap hover:bg-white/10">E-Books</button>
+                <div class="flex gap-4 mb-12 overflow-x-auto pb-4 no-scrollbar">
+                    <button onclick="filterItems('all')" class="bg-blue-600 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider shadow-lg shadow-blue-600/20">Todos Ativos</button>
+                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">Aplicações</button>
+                    <button onclick="filterItems('ebook')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-full text-[11px] font-black uppercase tracking-wider hover:bg-white/10">E-Books</button>
                 </div>
 
-                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    </div>
             </section>
         </div>
 
-        <div id="admin-view" class="hidden min-h-screen pt-32 px-6">
-            <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8">
-                <div class="lg:col-span-1 bg-white/5 p-6 rounded-3xl border border-white/10">
-                    <h3 class="font-black text-blue-500 uppercase text-xs mb-6 tracking-widest">Painel Administrativo</h3>
+        <div id="admin-view" class="hidden min-h-screen pt-40 px-6">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-3 gap-8 pb-20">
+                <div class="lg:col-span-1 bg-white/5 p-8 rounded-[2rem] border border-white/10">
+                    <h3 class="font-black text-blue-500 uppercase text-xs mb-8 tracking-widest">Gestão de Inventário</h3>
                     <div class="space-y-4">
-                        <input type="text" id="p-title" placeholder="Título" class="w-full p-3 rounded-xl text-xs">
-                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-3 rounded-xl text-xs">
-                        <select id="p-type" class="w-full p-3 rounded-xl text-xs">
-                            <option value="app">Aplicação</option>
-                            <option value="ebook">E-Book</option>
+                        <input type="text" id="p-title" placeholder="Nome do Produto" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 focus:border-blue-500 transition-all">
+                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
+                        <select id="p-type" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
+                            <option value="app">Sistema / Aplicação</option>
+                            <option value="ebook">Conteúdo Digital / E-book</option>
                         </select>
-                        <input type="file" id="p-file" class="text-[10px]">
-                        <input type="text" id="p-link" placeholder="Link de Download" class="w-full p-3 rounded-xl text-xs">
-                        <textarea id="p-desc" placeholder="Descrição..." class="w-full p-3 rounded-xl text-xs h-24"></textarea>
-                        <button onclick="saveProduct()" id="btn-save" class="w-full bg-blue-600 py-4 rounded-xl font-bold uppercase text-[10px]">Publicar no Stock</button>
-                        <button onclick="toggleView('public')" class="w-full py-2 text-[9px] uppercase font-black opacity-40">Sair do Painel</button>
+                        <div class="p-4 border border-dashed border-white/20 rounded-xl">
+                            <input type="file" id="p-file" class="text-[10px] w-full">
+                        </div>
+                        <input type="text" id="p-link" placeholder="URL Segura de Download" class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10">
+                        <textarea id="p-desc" placeholder="Breve descrição dos benefícios..." class="w-full p-4 rounded-xl text-xs bg-black/20 border border-white/10 h-32"></textarea>
+                        <button onclick="saveProduct()" id="btn-save" class="w-full btn-primary py-4 rounded-xl font-bold uppercase text-[11px] tracking-widest">Publicar no Ecossistema</button>
+                        <button onclick="toggleView('public')" class="w-full py-2 text-[10px] uppercase font-black opacity-30 hover:opacity-100 transition-all">Cancelar Operação</button>
                     </div>
                 </div>
-                <div class="lg:col-span-2 bg-white/2 rounded-3xl border border-white/5 overflow-hidden">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-white/5 font-black uppercase text-slate-500">
-                            <tr><th class="p-4">Produto</th><th class="p-4">Preço</th><th class="p-4">Ação</th></tr>
-                        </thead>
-                        <tbody id="admin-items-table"></tbody>
-                    </table>
+                <div class="lg:col-span-2 bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden">
+                    <div class="p-6 border-b border-white/5 bg-white/5 font-black uppercase text-[10px] tracking-widest text-slate-500">Stock Ativo</div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <tbody id="admin-items-table"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="login-view" class="hidden min-h-screen flex items-center justify-center">
-            <div class="bg-slate-900 p-10 rounded-[2.5rem] border border-white/10 w-80 text-center">
-                <h2 class="font-bold uppercase mb-6">Master Key</h2>
-                <input type="password" id="master-key" class="w-full mb-4 p-3 rounded-xl text-center">
-                <button onclick="doMasterLogin()" class="w-full bg-blue-600 py-3 rounded-xl font-bold uppercase text-xs">Entrar</button>
+        <div id="login-view" class="hidden min-h-screen flex items-center justify-center bg-black/50 backdrop-blur-xl">
+            <div class="bg-slate-900 p-12 rounded-[3rem] border border-white/10 w-96 text-center shadow-2xl">
+                <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-blue-600/30">
+                    <i class="fa-solid fa-lock text-2xl"></i>
+                </div>
+                <h2 class="font-black uppercase tracking-widest mb-2">Master Authentication</h2>
+                <p class="text-slate-500 text-[10px] mb-8 uppercase tracking-tighter">Apenas administradores CB Business</p>
+                <input type="password" id="master-key" placeholder="••••••••" class="w-full mb-4 p-4 rounded-2xl text-center tracking-[0.5em] bg-black/40 border border-white/10 focus:border-blue-500 outline-none">
+                <button onclick="doMasterLogin()" class="w-full btn-primary py-4 rounded-2xl font-black uppercase text-xs tracking-widest">Entrar no Terminal</button>
             </div>
         </div>
     </main>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-sm h-full bg-slate-900 shadow-2xl translate-x-full flex flex-col border-l border-white/10">
-        <div class="p-6 border-bottom border-white/5 flex justify-between items-center">
-            <h2 class="text-xl font-black uppercase italic tracking-tighter">Meu <span class="text-blue-500">Carrinho</span></h2>
-            <button onclick="toggleCart()" class="text-slate-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+    <footer class="bg-black/80 border-t border-white/5 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 mb-16">
+            <div>
+                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Produto</h4>
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="hover:text-white cursor-pointer transition-colors">Funcionalidades</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Planos</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Comissões</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Empresa</h4>
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="hover:text-white cursor-pointer transition-colors">Sobre Nós</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Clientes</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Conformidade</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Recursos</h4>
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="hover:text-white cursor-pointer transition-colors">FAQ</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Como Funciona</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-blue-500 font-black uppercase text-[10px] mb-6 tracking-widest">Legal</h4>
+                <ul class="space-y-3 text-slate-400 text-sm">
+                    <li class="hover:text-white cursor-pointer transition-colors">Termos de Serviço</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Privacidade</li>
+                    <li class="hover:text-white cursor-pointer transition-colors">Segurança</li>
+                </ul>
+            </div>
         </div>
-        
-        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4">
-            </div>
+        <div class="text-center border-t border-white/5 pt-10">
+            <p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold">&copy; 2024 CB Business Moçambique - Elite Digital Solutions</p>
+        </div>
+    </footer>
 
-        <div class="p-8 bg-black/40 border-t border-white/10">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-slate-500 font-bold uppercase text-[10px]">Total Estimado:</span>
-                <span id="cart-total" class="text-2xl font-black text-white">0 MT</span>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#020617] shadow-[-20px_0_50px_rgba(0,0,0,0.5)] translate-x-full flex flex-col border-l border-white/10 backdrop-blur-3xl">
+        <div class="p-8 border-b border-white/5 flex justify-between items-center">
+            <h2 class="text-2xl font-black italic tracking-tighter">Cart <span class="text-blue-500">Elite</span></h2>
+            <button onclick="toggleCart()" class="text-slate-500 hover:text-white transition-all"><i class="fa-solid fa-xmark text-2xl"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6"></div>
+        <div class="p-8 bg-white/5 border-t border-white/10">
+            <div class="flex justify-between items-end mb-8">
+                <span class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Subtotal:</span>
+                <span id="cart-total" class="text-3xl font-black text-white">0 MT</span>
             </div>
-            <button onclick="checkoutWhatsApp()" class="w-full bg-blue-600 hover:bg-blue-700 py-5 rounded-2xl font-black uppercase text-[10px] tracking-widest shadow-xl shadow-blue-600/20 transition-all flex items-center justify-center gap-3">
-                <i class="fa-brands fa-whatsapp text-lg"></i>
-                Finalizar Pedido
+            <button onclick="checkoutWhatsApp()" class="w-full btn-primary py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] flex items-center justify-center gap-3">
+                <i class="fa-brands fa-whatsapp text-xl"></i>
+                Proceder ao Pagamento
             </button>
         </div>
     </div>
 
-    <div id="details-modal" class="hidden fixed inset-0 flex items-center justify-center z-[4000] p-4 bg-black/90 backdrop-blur-md">
-        <div class="relative max-w-2xl w-full bg-slate-900 rounded-[2rem] border border-white/10 overflow-hidden">
-            <div class="flex flex-col md:flex-row">
-                <img id="det-img" class="md:w-1/2 aspect-square object-cover">
-                <div class="p-8 md:w-1/2 flex flex-col">
-                    <h2 id="det-title" class="text-2xl font-black uppercase italic mb-2"></h2>
-                    <p id="det-price" class="text-xl font-bold text-blue-500 mb-4"></p>
-                    <p id="det-desc" class="text-slate-400 text-sm mb-8 leading-relaxed"></p>
-                    <div class="mt-auto flex gap-2">
-                        <button id="add-to-cart-btn" class="flex-1 bg-white text-black py-4 rounded-xl font-black text-[10px] uppercase">Adicionar ao Carrinho</button>
-                        <button onclick="closeDetails()" class="px-6 bg-white/5 rounded-xl border border-white/10">Sair</button>
+    <div id="details-modal" class="hidden fixed inset-0 z-[6000] modal-blur p-4 md:p-10 flex items-center justify-center">
+        <div class="relative max-w-5xl w-full bg-[#0a0f1e] rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+            <button onclick="closeDetails()" class="absolute top-6 right-6 z-10 w-12 h-12 bg-black/50 hover:bg-black rounded-full flex items-center justify-center transition-all border border-white/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex flex-col md:flex-row h-full">
+                <div class="md:w-1/2 relative bg-black">
+                    <img id="det-img" src="" class="w-full h-full object-cover opacity-80">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#0a0f1e] via-transparent to-transparent"></div>
+                </div>
+                <div class="p-10 md:p-16 md:w-1/2 flex flex-col justify-center">
+                    <span id="det-tag" class="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4">Ativo Premium</span>
+                    <h2 id="det-title" class="text-4xl md:text-5xl font-black italic tracking-tighter mb-6 leading-none"></h2>
+                    <div class="flex items-center gap-4 mb-8">
+                        <span id="det-price" class="text-3xl font-light text-white"></span>
+                        <div class="h-4 w-[1px] bg-white/10"></div>
+                        <span class="text-[10px] text-green-500 font-bold uppercase tracking-widest"><i class="fa-solid fa-circle-check mr-2"></i>Verificado</span>
+                    </div>
+                    <p id="det-desc" class="text-slate-400 leading-relaxed text-sm mb-10"></p>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-bolt text-blue-500 mb-2"></i>
+                            <p class="text-[9px] uppercase font-bold text-slate-500">Acesso</p>
+                            <p class="text-[11px] font-bold">Instantâneo</p>
+                        </div>
+                        <div class="bg-white/5 p-4 rounded-2xl border border-white/5">
+                            <i class="fa-solid fa-shield-halved text-blue-500 mb-2"></i>
+                            <p class="text-[9px] uppercase font-bold text-slate-500">Suporte</p>
+                            <p class="text-[11px] font-bold">24/7 Elite</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-auto">
+                        <button id="add-to-cart-btn" class="w-full btn-primary py-5 rounded-2xl font-black uppercase text-[11px] tracking-widest shadow-xl shadow-blue-600/20">
+                            Adicionar ao Carrinho
+                        </button>
                     </div>
                 </div>
             </div>
@@ -144,6 +251,7 @@
     </div>
 
     <script>
+        // Supabase Config (Mantendo sua configuração)
         const SUPABASE_URL = 'https://godaswedwiopldcaeuvq.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_BZ4EUkworgGfHC5-gdw3iQ_MF4FfLnT';
         const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -164,51 +272,38 @@
         function renderCatalog(items) {
             const grid = document.getElementById('catalog-grid');
             grid.innerHTML = items.map(p => `
-                <div class="premium-card p-4 flex flex-col">
-                    <div class="relative overflow-hidden rounded-xl mb-4 group cursor-pointer" onclick="openDetails('${p.id}')">
-                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-[3/4] object-cover transition-transform group-hover:scale-110">
-                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <span class="bg-white text-black px-4 py-2 rounded-full text-[9px] font-black uppercase">Detalhes</span>
+                <div class="premium-card p-5 group">
+                    <div class="relative overflow-hidden rounded-2xl mb-6 cursor-pointer" onclick="openDetails('${p.id}')">
+                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full aspect-[4/5] object-cover transition-all duration-700 group-hover:scale-110 group-hover:rotate-1">
+                        <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="bg-white text-black px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-tighter">Explorar Ativo</span>
                         </div>
                     </div>
-                    <h3 class="font-bold text-xs uppercase truncate mb-1">${p.title}</h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-blue-500 font-black text-sm">${p.price.toLocaleString()} MT</span>
-                        <span class="text-[8px] bg-white/5 px-2 py-1 rounded border border-white/10 font-bold uppercase">${p.type}</span>
+                    <p class="text-blue-500 text-[9px] font-black uppercase tracking-widest mb-1">${p.type}</p>
+                    <h3 class="font-bold text-sm uppercase mb-4 tracking-tight group-hover:text-blue-400 transition-colors">${p.title}</h3>
+                    <div class="flex justify-between items-center pt-4 border-t border-white/5">
+                        <span class="text-white font-black text-lg">${p.price.toLocaleString()} <span class="text-[10px] text-slate-500">MT</span></span>
+                        <button onclick="addToCart('${p.id}')" class="bg-white/5 hover:bg-white hover:text-black w-10 h-10 rounded-full transition-all flex items-center justify-center">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
                     </div>
-                    <button onclick="addToCart('${p.id}')" class="w-full bg-white/5 border border-white/10 hover:bg-blue-600 hover:text-white transition-all py-3 rounded-xl text-[9px] font-black uppercase">
-                        Adicionar
-                    </button>
                 </div>
             `).join('');
         }
 
-        // --- SISTEMA DE CARRINHO ---
-
-        function toggleCart() {
-            document.getElementById('cart-sidebar').classList.toggle('cart-open');
-        }
+        function toggleCart() { document.getElementById('cart-sidebar').classList.toggle('cart-open'); }
 
         function addToCart(id) {
             const product = allProducts.find(p => p.id === id);
-            const exists = cart.find(item => item.id === id);
-            
-            if (!exists) {
+            if (!cart.find(item => item.id === id)) {
                 cart.push(product);
                 updateCartUI();
-                // Pequeno feedback visual
-                const btn = event.target;
-                const originalText = btn.innerText;
-                btn.innerText = "Adicionado!";
-                setTimeout(() => btn.innerText = originalText, 1000);
-            } else {
-                alert("Este item já está no carrinho.");
+                if(event) {
+                    const btn = event.currentTarget;
+                    btn.innerHTML = '<i class="fa-solid fa-check text-green-500"></i>';
+                    setTimeout(() => btn.innerHTML = '<i class="fa-solid fa-plus"></i>', 2000);
+                }
             }
-        }
-
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            updateCartUI();
         }
 
         function updateCartUI() {
@@ -219,82 +314,75 @@
             countLabel.innerText = cart.length;
             countLabel.classList.toggle('hidden', cart.length === 0);
 
-            if (cart.length === 0) {
-                container.innerHTML = `<div class="h-full flex flex-col items-center justify-center opacity-20"><i class="fa-solid fa-basket-shopping text-4xl mb-2"></i><p class="text-xs font-bold uppercase">Vazio</p></div>`;
-            } else {
-                container.innerHTML = cart.map(item => `
-                    <div class="flex items-center gap-4 bg-white/5 p-3 rounded-2xl border border-white/10">
-                        <img src="${item.cover_url}" class="w-12 h-12 rounded-lg object-cover">
+            container.innerHTML = cart.length === 0 ? 
+                `<div class="h-full flex flex-col items-center justify-center opacity-20"><i class="fa-solid fa-box-open text-5xl mb-4"></i><p class="text-xs font-black uppercase tracking-widest">Vazio</p></div>` :
+                cart.map(item => `
+                    <div class="flex items-center gap-5 bg-white/5 p-4 rounded-2xl border border-white/10 group">
+                        <img src="${item.cover_url}" class="w-16 h-16 rounded-xl object-cover">
                         <div class="flex-1">
-                            <h4 class="text-[10px] font-black uppercase truncate w-32">${item.title}</h4>
-                            <p class="text-blue-500 font-bold text-[10px]">${item.price.toLocaleString()} MT</p>
+                            <h4 class="text-[10px] font-black uppercase tracking-tighter mb-1">${item.title}</h4>
+                            <p class="text-blue-500 font-bold text-xs">${item.price.toLocaleString()} MT</p>
                         </div>
-                        <button onclick="removeFromCart('${item.id}')" class="text-red-500/50 hover:text-red-500 transition-all"><i class="fa-solid fa-trash-can"></i></button>
+                        <button onclick="removeFromCart('${item.id}')" class="opacity-0 group-hover:opacity-100 text-red-500/50 hover:text-red-500 transition-all"><i class="fa-solid fa-trash-can"></i></button>
                     </div>
                 `).join('');
-            }
 
             const total = cart.reduce((acc, item) => acc + item.price, 0);
             totalLabel.innerText = total.toLocaleString() + " MT";
         }
 
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return alert("Adicione produtos primeiro!");
-            
-            let itensStr = cart.map(item => `- ${item.title} (${item.price.toLocaleString()} MT)`).join('%0A');
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            
-            const msg = `*NOVA ENCOMENDA - CB BUSINESS*%0A%0A` +
-                        `*ITENS:*%0A${itensStr}%0A%0A` +
-                        `*VALOR TOTAL:* ${total.toLocaleString()} MT%0A` +
-                        `---------------------------%0A` +
-                        `Olá! Gostaria de efetuar o pagamento destes ativos digitais.`;
-            
-            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCartUI();
         }
-
-        // --- FUNÇÕES DE INTERFACE ---
 
         function openDetails(id) {
             const p = allProducts.find(x => x.id === id);
             document.getElementById('det-img').src = p.cover_url;
             document.getElementById('det-title').innerText = p.title;
             document.getElementById('det-price').innerText = p.price.toLocaleString() + " MT";
-            document.getElementById('det-desc').innerText = p.descricao || "Ativo verificado para alta performance.";
-            document.getElementById('add-to-cart-btn').onclick = () => { addToCart(p.id); closeDetails(); };
+            document.getElementById('det-desc').innerText = p.descricao || "Este ativo digital foi rigorosamente testado pela nossa equipe para garantir alta performance e escalabilidade em seus projetos.";
+            document.getElementById('det-tag').innerText = p.type === 'app' ? 'Software de Elite' : 'Conhecimento Estratégico';
+            document.getElementById('add-to-cart-btn').onclick = () => { addToCart(p.id); closeDetails(); toggleCart(); };
             document.getElementById('details-modal').classList.remove('hidden');
         }
 
         function closeDetails() { document.getElementById('details-modal').classList.add('hidden'); }
 
-        function filterItems(type) {
-            renderCatalog(type === 'all' ? allProducts : allProducts.filter(p => p.type === type));
-        }
-
         function toggleView(v) {
             ['public', 'login', 'admin'].forEach(view => document.getElementById(view + '-view').classList.add('hidden'));
             document.getElementById(v + '-view').classList.remove('hidden');
             if(v === 'admin') loadAdminDashboard();
+            window.scrollTo(0,0);
         }
 
         function doMasterLogin() {
             if(document.getElementById('master-key').value === "Administrador-Profissional") toggleView('admin');
-            else alert("Acesso Negado.");
+            else alert("Chave de acesso inválida.");
         }
 
         async function loadAdminDashboard() {
             const table = document.getElementById('admin-items-table');
             table.innerHTML = allProducts.map(p => `
-                <tr class="border-b border-white/5">
-                    <td class="p-4">${p.title}</td>
-                    <td class="p-4 text-blue-500 font-bold">${p.price} MT</td>
-                    <td class="p-4"><button onclick="deleteProduct('${p.id}')" class="text-red-500"><i class="fa-solid fa-trash"></i></button></td>
+                <tr class="border-b border-white/5 hover:bg-white/2 transition-colors">
+                    <td class="p-6">
+                        <div class="flex items-center gap-4">
+                            <img src="${p.cover_url}" class="w-10 h-10 rounded shadow-lg">
+                            <span class="font-bold uppercase tracking-tighter">${p.title}</span>
+                        </div>
+                    </td>
+                    <td class="p-6 text-blue-500 font-black">${p.price.toLocaleString()} MT</td>
+                    <td class="p-6 text-right">
+                        <button onclick="deleteProduct('${p.id}')" class="w-8 h-8 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all">
+                            <i class="fa-solid fa-trash text-[10px]"></i>
+                        </button>
+                    </td>
                 </tr>
             `).join('');
         }
 
         async function deleteProduct(id) {
-            if(confirm("Eliminar?")) {
+            if(confirm("Confirmar exclusão definitiva?")) {
                 await sbClient.from('ebooks').delete().eq('id', id);
                 await fetchData();
                 loadAdminDashboard();
@@ -303,9 +391,9 @@
 
         async function saveProduct() {
             const btn = document.getElementById('btn-save');
-            btn.innerHTML = "...";
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Processando...';
             const file = document.getElementById('p-file').files[0];
-            let coverUrl = "";
+            let coverUrl = "https://via.placeholder.com/400";
 
             if(file) {
                 const name = `${Date.now()}_${file.name}`;
@@ -326,23 +414,49 @@
             location.reload();
         }
 
+        function filterItems(type) {
+            renderCatalog(type === 'all' ? allProducts : allProducts.filter(p => p.type === type));
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            const itensStr = cart.map(item => `- *${item.title}* (${item.price.toLocaleString()} MT)`).join('%0A');
+            const total = cart.reduce((acc, item) => acc + item.price, 0);
+            const msg = `*NOVA ORDEM DE SERVIÇO - CB BUSINESS*%0A%0A` +
+                        `*ITENS SELECIONADOS:*%0A${itensStr}%0A%0A` +
+                        `*TOTAL:* ${total.toLocaleString()} MT%0A` +
+                        `---------------------------%0A` +
+                        `Olá! Desejo realizar o pagamento destes ativos via Gateway Moçambique.`;
+            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
+        }
+
         function initParticles() {
             const canvas = document.getElementById('particles-js');
             const ctx = canvas.getContext('2d');
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            let p = [];
-            for(let i=0; i<40; i++) p.push({x: Math.random()*canvas.width, y: Math.random()*canvas.height, s: Math.random()*0.5});
-            function draw() {
-                ctx.clearRect(0,0,canvas.width, canvas.height);
-                ctx.fillStyle = "rgba(255,255,255,0.1)";
-                p.forEach(i => {
-                    ctx.beginPath(); ctx.arc(i.x, i.y, 1, 0, Math.PI*2); ctx.fill();
-                    i.y -= i.s; if(i.y < 0) i.y = canvas.height;
+            let particles = [];
+            for(let i=0; i<50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 1.5,
+                    speed: Math.random() * 0.3 + 0.1
                 });
-                requestAnimationFrame(draw);
             }
-            draw();
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgba(59, 130, 246, 0.4)";
+                particles.forEach(p => {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    p.y -= p.speed;
+                    if(p.y < 0) p.y = canvas.height;
+                });
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
 
         window.onload = init;
