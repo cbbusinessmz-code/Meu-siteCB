@@ -3,203 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CB Business | Elite Digital Solutions</title>
+    <title>CB Business | Elite Digital Gateway</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap');
-        
-        :root { 
-            --primary: #3b82f6; 
-            --bg: #05070a; 
-            --card-bg: rgba(255, 255, 255, 0.02);
-        }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg); 
-            color: #e2e8f0; 
-            overflow-x: hidden;
-        }
-
-        .glass-nav { background: rgba(5, 7, 10, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-        
-        .premium-card { 
-            background: var(--card-bg); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .premium-card:hover { 
-            background: rgba(255, 255, 255, 0.04);
-            border-color: var(--primary);
-            transform: translateY(-5px);
-        }
-
-        .btn-elite {
-            background: linear-gradient(135deg, #1e40af, #3b82f6);
-            transition: all 0.4s ease;
-            letter-spacing: 1px;
-        }
-
-        .btn-elite:hover {
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
-            transform: scale(1.02);
-        }
-
-        #cart-sidebar { transition: transform 0.6s cubic-bezier(0.85, 0, 0.15, 1); z-index: 9999; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        :root { --primary: #3b82f6; --bg: #030712; --card-bg: rgba(255, 255, 255, 0.02); }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg); color: #f8fafc; scroll-behavior: smooth; }
+        .glass-nav { background: rgba(3, 7, 18, 0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .premium-card { background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 2rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .premium-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 20px 40px -20px rgba(59, 130, 246, 0.3); }
+        .gradient-text { background: linear-gradient(to right, #fff, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #cart-sidebar { transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: 6000; }
         .cart-open { transform: translateX(0) !important; }
-
-        .shimmer {
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 3s infinite;
-        }
-        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-
-        .step-inactive { opacity: 0.3; filter: grayscale(1); pointer-events: none; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .faq-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 1rem; transition: all 0.3s; }
+        .faq-item:hover { background: rgba(255,255,255,0.05); }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-[1000] glass-nav py-4 px-6 md:px-20 flex justify-between items-center">
-        <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-xl shadow-lg shadow-blue-900/40">CB</div>
-            <span class="text-sm font-extrabold tracking-[0.2em] uppercase">Business</span>
+    <canvas id="particles-js" class="fixed inset-0 z-[-1] pointer-events-none opacity-30"></canvas>
+
+    <nav class="fixed top-0 w-full z-[1000] glass-nav py-5 px-6 md:px-20 flex justify-between items-center">
+        <div class="flex items-center gap-3 cursor-pointer group" onclick="location.reload()">
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform">
+                <i class="fa-solid fa-bolt-lightning text-white"></i>
+            </div>
+            <div>
+                <span class="text-xl font-extrabold tracking-tight block leading-none">CB BUSINESS</span>
+                <span class="text-[9px] text-blue-500 font-bold tracking-[0.3em] uppercase">Moçambique</span>
+            </div>
         </div>
-        
-        <div class="flex items-center gap-5">
-            <button onclick="toggleCart()" class="relative p-2 text-slate-400 hover:text-white transition-all">
-                <i class="fa-solid fa-bag-shopping text-xl"></i>
-                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-[9px] w-4 h-4 flex items-center justify-center rounded-full font-bold hidden">0</span>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleCart()" class="relative bg-white/5 p-3.5 rounded-2xl border border-white/10 hover:bg-white/10 transition-all">
+                <i class="fa-solid fa-bag-shopping text-sm"></i>
+                <span id="cart-count" class="absolute -top-1 -right-1 bg-blue-600 text-[9px] w-5 h-5 flex items-center justify-center rounded-full font-bold hidden border-2 border-[#030712]">0</span>
             </button>
-            <button onclick="toggleView('login')" class="text-slate-600 hover:text-blue-500 transition-all">
-                <i class="fa-solid fa-gear text-lg"></i>
-            </button>
+            <button onclick="toggleView('login')" class="bg-white/5 hover:bg-white/10 px-5 py-2.5 rounded-xl text-[10px] font-bold uppercase tracking-widest border border-white/10 transition-all">Acesso Master</button>
         </div>
     </nav>
 
     <main id="app">
-        <div id="public-view" class="pt-32 pb-20">
-            <section class="max-w-6xl mx-auto px-6 text-center mb-24">
-                <div class="inline-block px-4 py-1 border border-blue-500/20 rounded-full mb-6 bg-blue-500/5">
-                    <span class="text-blue-400 text-[10px] font-bold uppercase tracking-[0.4em]">Mozambique Digital Assets</span>
-                </div>
-                <h1 class="text-4xl md:text-6xl font-extrabold mb-8 tracking-tighter">Sistemas e Conhecimento <br><span class="text-blue-500">de Próxima Geração.</span></h1>
-                
-                <div class="flex flex-wrap justify-center gap-3 opacity-60 grayscale hover:grayscale-0 transition-all">
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">M-PESA</div>
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">E-MOLA</div>
-                    <div class="px-4 py-2 bg-white/5 rounded-lg border border-white/10 text-[10px] font-bold">M-KESH</div>
-                </div>
+        <div id="public-view" class="pt-44">
+            <section class="max-w-6xl mx-auto px-6 mb-24 text-center">
+                <h1 class="text-6xl md:text-8xl font-black mb-8 gradient-text leading-[0.9]">Digital Elite Gateway.</h1>
+                <p class="text-slate-400 text-lg max-w-2xl mx-auto font-light leading-relaxed">Infraestrutura premium para ativos digitais e softwares em Moçambique.</p>
             </section>
 
-            <section class="max-w-7xl mx-auto px-6">
-                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <section class="max-w-7xl mx-auto px-6 mb-32">
+                <div class="flex flex-wrap justify-center gap-3 mb-16">
+                    <button onclick="filterItems('all')" class="bg-blue-600 px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-wider">Explorar Tudo</button>
+                    <button onclick="filterItems('app')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-wider hover:bg-white/10 transition-all">Softwares</button>
+                    <button onclick="filterItems('ebook')" class="bg-white/5 border border-white/10 px-8 py-3 rounded-2xl text-[11px] font-black uppercase tracking-wider hover:bg-white/10 transition-all">E-Books</button>
+                </div>
+                <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-6 mb-32 border-y border-white/5 py-20">
+                <h2 class="text-center font-black uppercase tracking-widest text-sm mb-12 text-blue-500">Líderes de Mercado Confiam</h2>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <p class="italic text-slate-400 mb-6 font-light">"A CB Business revolucionou a forma como vendo meus softwares. O gateway é impecável."</p>
+                        <h4 class="font-black text-xs uppercase tracking-widest">João Paulo</h4>
+                        <span class="text-[9px] text-blue-500 font-bold uppercase">Dev Moz</span>
                     </div>
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <p class="italic text-slate-400 mb-6 font-light">"O suporte local faz toda a diferença para o mercado de Moçambique."</p>
+                        <h4 class="font-black text-xs uppercase tracking-widest">Sara Alberto</h4>
+                        <span class="text-[9px] text-blue-500 font-bold uppercase">CEO Digital Hub</span>
+                    </div>
+                    <div class="p-8 bg-white/5 rounded-3xl border border-white/10">
+                        <p class="italic text-slate-400 mb-6 font-light">"Seguro, rápido e altamente profissional. Recomendo a todos empreendedores."</p>
+                        <h4 class="font-black text-xs uppercase tracking-widest">Mauro Ismael</h4>
+                        <span class="text-[9px] text-blue-500 font-bold uppercase">E-com Strategist</span>
+                    </div>
+                </div>
             </section>
 
-            <section class="max-w-3xl mx-auto px-6 mt-32">
-                <h2 class="text-center font-bold uppercase tracking-widest text-xs mb-10 text-slate-500">Perguntas Frequentes</h2>
+            <section class="max-w-7xl mx-auto px-6 mb-32">
+                <h2 class="text-3xl font-black mb-12">CB <span class="text-blue-500 italic">Insights</span></h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="group cursor-pointer">
+                        <div class="overflow-hidden rounded-3xl mb-6 aspect-video bg-white/5">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-all">
+                        </div>
+                        <span class="text-blue-500 font-black text-[10px] uppercase tracking-widest">Economia Digital</span>
+                        <h3 class="text-xl font-bold mt-2">O Futuro dos Pagamentos Digitais em Moçambique</h3>
+                        <p class="text-slate-500 text-sm mt-4 font-light">Descubra como a integração M-Pesa/e-Mola está a mudar o comércio online nacional.</p>
+                    </div>
+                    <div class="group cursor-pointer">
+                        <div class="overflow-hidden rounded-3xl mb-6 aspect-video bg-white/5">
+                            <img src="https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-all">
+                        </div>
+                        <span class="text-blue-500 font-black text-[10px] uppercase tracking-widest">Estratégia</span>
+                        <h3 class="text-xl font-bold mt-2">Como Vender mais Ativos Digitais este Ano</h3>
+                        <p class="text-slate-500 text-sm mt-4 font-light">Estratégias práticas para converter seguidores em compradores reais.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="max-w-4xl mx-auto px-6 mb-32">
+                <h2 class="text-3xl font-black mb-12 text-center">Perguntas <span class="text-blue-500">Frequentes</span></h2>
                 <div class="space-y-4">
-                    <div class="p-6 bg-white/5 border border-white/10 rounded-2xl">
-                        <h4 class="font-bold text-sm mb-2">Como recebo o acesso?</h4>
-                        <p class="text-xs text-slate-400 leading-relaxed">Após o envio do comprovativo via WhatsApp, o sistema valida a transação e o link de download é libertado instantaneamente pelo nosso suporte.</p>
+                    <div class="faq-item p-6">
+                        <h4 class="font-bold text-sm text-blue-400">Como recebo o meu produto?</h4>
+                        <p class="text-slate-400 text-sm mt-2 font-light">Após a confirmação do pagamento via WhatsApp (M-Pesa/e-Mola), enviamos o link de download seguro instantaneamente.</p>
+                    </div>
+                    <div class="faq-item p-6">
+                        <h4 class="font-bold text-sm text-blue-400">É seguro comprar na CB Business?</h4>
+                        <p class="text-slate-400 text-sm mt-2 font-light">Sim, somos uma plataforma verificada com suporte local 24/7 para garantir sua entrega.</p>
+                    </div>
+                    <div class="faq-item p-6">
+                        <h4 class="font-bold text-sm text-blue-400">Posso pagar via m-Kesh?</h4>
+                        <p class="text-slate-400 text-sm mt-2 font-light">Aceitamos M-Pesa, e-Mola e m-Kesh. Basta anexar o comprovativo na conversa do WhatsApp.</p>
                     </div>
                 </div>
             </section>
         </div>
 
-        <div id="login-view" class="hidden min-h-screen flex items-center justify-center p-6">
-            <div class="w-full max-w-sm bg-white/5 p-10 rounded-[2rem] border border-white/10 text-center">
-                <i class="fa-solid fa-shield-halved text-3xl text-blue-500 mb-6"></i>
-                <h2 class="font-bold mb-8 uppercase tracking-widest text-sm">Terminal do Administrador</h2>
-                <input type="password" id="master-key" placeholder="Acesso Privado" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl mb-4 text-center outline-none focus:border-blue-500 transition-all">
-                <button onclick="doMasterLogin()" class="w-full btn-elite py-4 rounded-xl font-bold text-xs uppercase">Autenticar</button>
-                <button onclick="toggleView('public')" class="mt-6 text-[10px] uppercase opacity-40 hover:opacity-100">Voltar ao Site</button>
+        <div id="admin-view" class="hidden min-h-screen pt-40 px-6 max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 bg-white/5 p-8 rounded-[2.5rem] border border-white/10 h-fit sticky top-40">
+                    <h3 id="admin-form-title" class="font-black text-blue-500 uppercase text-xs mb-8 tracking-widest">Gestão de Inventário</h3>
+                    <div class="space-y-4">
+                        <input type="hidden" id="p-id">
+                        <input type="text" id="p-title" placeholder="Nome do Ativo" class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 focus:border-blue-500 outline-none">
+                        <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 outline-none">
+                        <select id="p-type" class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 outline-none">
+                            <option value="app">Aplicação/Software</option>
+                            <option value="ebook">E-Book/Digital</option>
+                        </select>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Imagem (Upload ou Link)</label>
+                            <input type="file" id="p-file" class="text-[10px] w-full p-3 bg-white/5 rounded-xl border border-white/10">
+                            <input type="text" id="p-cover-url" placeholder="Ou cole o link da imagem" class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 outline-none">
+                        </div>
+                        <input type="text" id="p-link" placeholder="Link de Entrega/Download" class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 outline-none">
+                        <textarea id="p-desc" placeholder="Descrição completa..." class="w-full p-4 rounded-xl text-xs bg-black/40 border border-white/10 h-32 outline-none"></textarea>
+                        <button onclick="saveProduct()" id="btn-save" class="w-full bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-black uppercase text-[11px] tracking-widest transition-all">Salvar Alterações</button>
+                        <button onclick="resetAdminForm()" class="w-full py-2 text-[10px] uppercase font-bold opacity-40 hover:opacity-100 transition-all">Novo Produto</button>
+                        <button onclick="toggleView('public')" class="w-full py-2 text-[10px] uppercase font-bold opacity-40 hover:opacity-100 transition-all">Sair do Painel</button>
+                    </div>
+                </div>
+                <div class="lg:col-span-2 bg-white/5 rounded-[2.5rem] border border-white/10 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <tbody id="admin-items-table"></tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="admin-view" class="hidden pt-32 px-6 pb-20">
-            <div class="max-w-6xl mx-auto grid lg:grid-cols-3 gap-10">
-                <div class="lg:col-span-1 space-y-4">
-                    <div class="bg-white/5 p-8 rounded-[2rem] border border-white/10">
-                        <h3 class="text-xs font-bold uppercase mb-6 text-blue-500">Novo Ativo</h3>
-                        <div class="space-y-3">
-                            <input type="text" id="p-title" placeholder="Título do Produto" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
-                            <input type="number" id="p-price" placeholder="Preço (MT)" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
-                            <input type="text" id="p-link" placeholder="Link de Entrega (WhatsApp)" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none">
-                            <select id="p-type" class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs outline-none appearance-none">
-                                <option value="SISTEMA">SISTEMA / APP</option>
-                                <option value="EBOOK">E-BOOK ELITE</option>
-                            </select>
-                            <textarea id="p-desc" placeholder="Breve descrição dos benefícios..." class="w-full bg-black/40 border border-white/10 p-4 rounded-xl text-xs h-32 outline-none"></textarea>
-                            <button onclick="saveProduct()" class="w-full btn-elite py-4 rounded-xl font-bold text-[10px] uppercase">Publicar Ativo</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="lg:col-span-2 bg-white/5 rounded-[2rem] border border-white/10 overflow-hidden">
-                    <table class="w-full text-left text-[10px] uppercase font-bold">
-                        <thead class="bg-white/5 text-slate-500">
-                            <tr>
-                                <th class="p-6">Produto</th>
-                                <th class="p-6">Preço</th>
-                                <th class="p-6 text-right">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="admin-items-table" class="divide-y divide-white/5"></tbody>
-                    </table>
-                </div>
+        <div id="login-view" class="hidden min-h-screen fixed inset-0 z-[5000] flex items-center justify-center bg-black/90 backdrop-blur-md">
+            <div class="bg-slate-900 p-12 rounded-[3rem] border border-white/10 w-full max-w-sm text-center">
+                <i class="fa-solid fa-shield-halved text-4xl text-blue-500 mb-6"></i>
+                <input type="password" id="master-key" placeholder="CHAVE MESTRA" class="w-full mb-6 p-4 rounded-2xl text-center tracking-[0.5em] bg-black/40 border border-white/10 focus:border-blue-500 outline-none">
+                <button onclick="doMasterLogin()" class="w-full bg-blue-600 py-4 rounded-2xl font-black uppercase text-xs tracking-widest transition-all">Entrar</button>
+                <button onclick="toggleView('public')" class="mt-6 text-slate-500 text-[10px] font-bold hover:text-white uppercase">Fechar</button>
             </div>
         </div>
     </main>
 
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#05070a] border-l border-white/10 translate-x-full flex flex-col">
-        <div class="p-8 flex justify-between items-center border-b border-white/5">
-            <h2 class="text-xl font-bold tracking-tighter">Checkout <span class="text-blue-500">Business</span></h2>
-            <button onclick="toggleCart()" class="text-slate-500"><i class="fa-solid fa-xmark"></i></button>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-md h-full bg-[#030712] translate-x-full flex flex-col border-l border-white/5">
+        <div class="p-8 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+            <h2 class="text-xl font-black uppercase tracking-tighter">Carrinho</h2>
+            <button onclick="toggleCart()" class="w-10 h-10 rounded-full hover:bg-white/5 flex items-center justify-center transition-all"><i class="fa-solid fa-xmark"></i></button>
         </div>
-
-        <div id="cart-content" class="flex-1 overflow-y-auto p-8">
-            <div id="step-1" class="space-y-6">
-                <div id="cart-items-list" class="space-y-4"></div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-8 space-y-6 no-scrollbar"></div>
+        <div class="p-8 bg-white/[0.02] border-t border-white/5">
+            <div class="flex justify-between items-end mb-8">
+                <span class="text-slate-500 font-bold uppercase text-[10px] tracking-widest">Subtotal</span>
+                <span id="cart-total" class="text-3xl font-black text-white">0 MT</span>
             </div>
-
-            <div id="step-2" class="mt-10 pt-10 border-t border-white/5 step-inactive">
-                <h3 class="text-[10px] font-black uppercase text-blue-500 mb-4">2. Pagamento & Comprovativo</h3>
-                <div class="bg-white/5 p-4 rounded-xl mb-4 border border-blue-500/20">
-                    <p class="text-[10px] text-slate-400 mb-2">Envie o valor para:</p>
-                    <p class="text-sm font-bold">M-Pesa: 844606198 (CB)</p>
-                </div>
-                <div class="space-y-3">
-                    <input type="text" id="cust-phone" placeholder="Seu Número WhatsApp" class="w-full bg-white/5 border border-white/10 p-4 rounded-xl text-xs outline-none">
-                    <div class="relative w-full h-12 bg-white/5 border border-dashed border-white/20 rounded-xl flex items-center justify-center cursor-pointer">
-                        <input type="file" class="absolute inset-0 opacity-0 cursor-pointer">
-                        <span class="text-[9px] uppercase font-bold text-slate-500">Anexar Comprovativo (Opcional)</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-8 bg-white/5 border-t border-white/10">
-            <div class="flex justify-between items-end mb-6">
-                <span class="text-[10px] font-bold text-slate-500 uppercase">Total Geral</span>
-                <span id="cart-total" class="text-2xl font-bold">0 MT</span>
-            </div>
-            <button id="checkout-btn" onclick="nextStep()" class="w-full btn-elite py-5 rounded-2xl font-bold text-xs uppercase flex items-center justify-center gap-3">
-                Continuar Compra <i class="fa-solid fa-arrow-right"></i>
+            <button onclick="checkoutWhatsApp()" class="w-full bg-blue-600 hover:bg-blue-500 py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] flex items-center justify-center gap-3">
+                <i class="fa-brands fa-whatsapp text-xl"></i> Pagar Agora
             </button>
         </div>
     </div>
 
-    <footer class="mt-20 py-10 border-t border-white/5 text-center">
-        <div class="flex justify-center gap-6 mb-6">
-            <img src="https://img.icons8.com/color/48/visa.png" class="h-5 opacity-30">
-            <img src="https://img.icons8.com/color/48/mastercard.png" class="h-5 opacity-30">
-            <i class="fa-solid fa-shield-halved text-slate-700"></i>
+    <div id="details-modal" class="hidden fixed inset-0 z-[7000] bg-black/95 backdrop-blur-xl p-4 md:p-10 flex items-center justify-center">
+        <div class="modal-content relative max-w-5xl w-full bg-slate-900 rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
+            <button onclick="closeDetails()" class="absolute top-6 right-6 z-20 w-12 h-12 bg-white/5 hover:bg-red-500 rounded-2xl flex items-center justify-center transition-all border border-white/10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="flex flex-col md:flex-row h-full max-h-[85vh]">
+                <div class="md:w-1/2">
+                    <img id="det-img" src="" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8 md:p-12 md:w-1/2 overflow-y-auto no-scrollbar">
+                    <span id="det-tag" class="text-blue-500 text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">Premium</span>
+                    <h2 id="det-title" class="text-3xl md:text-4xl font-black mb-6 tracking-tight"></h2>
+                    <p id="det-desc" class="text-slate-400 text-sm leading-relaxed whitespace-pre-line mb-10"></p>
+                    <div id="det-actions" class="mt-auto flex flex-col gap-4">
+                        <div class="flex justify-between items-end border-t border-white/5 pt-6">
+                            <div>
+                                <span class="text-slate-500 text-[10px] font-bold uppercase mb-1 block">Preço</span>
+                                <p id="det-price" class="text-3xl font-black text-white"></p>
+                            </div>
+                            <button id="add-to-cart-btn" class="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-2xl font-black uppercase text-[11px] tracking-widest transition-all">Adicionar</button>
+                        </div>
+                        <a id="det-download-btn" href="#" target="_blank" class="hidden w-full bg-white/5 border border-white/10 hover:bg-white/10 py-4 rounded-2xl text-center font-black uppercase text-[11px] tracking-widest transition-all">Link de Download</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <p class="text-[9px] text-slate-600 uppercase tracking-[0.3em]">© 2024 CB BUSINESS - Segurança Bancária Garantida</p>
+    </div>
+
+    <footer class="bg-black border-t border-white/5 py-20 px-6">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+            <div>
+                <span class="text-xl font-black tracking-tighter block mb-6 uppercase">CB Business</span>
+                <p class="text-slate-500 text-xs leading-relaxed mb-6">Excelência em Ativos Digitais e Infraestrutura de Pagamentos para Moçambique.</p>
+                <div class="flex gap-4">
+                    <a href="https://www.facebook.com/profile.php?id=100064778200015" target="_blank" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-blue-600 transition-all">
+                        <i class="fa-brands fa-facebook-f text-sm"></i>
+                    </a>
+                    <a href="https://wa.me/258820386282" target="_blank" class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center hover:bg-green-600 transition-all">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                    </a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-black uppercase text-[11px] mb-8 tracking-widest">Pagamentos</h4>
+                <div class="space-y-4 text-slate-400 text-xs font-bold">
+                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                        <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center text-white text-[10px]">M</div>
+                        <div>M-Pesa: 844606198</div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                        <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center text-white text-[10px]">E</div>
+                        <div>e-Mola: 876606198</div>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/5">
+                        <div class="w-8 h-8 bg-yellow-600 rounded-lg flex items-center justify-center text-white text-[10px]">K</div>
+                        <div>m-Kesh: 820386282</div>
+                    </div>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <h4 class="text-white font-black uppercase text-[11px] mb-8 tracking-widest">Links Rápidos</h4>
+                <div class="grid grid-cols-2 text-slate-500 text-xs space-y-2 uppercase font-black">
+                    <a href="#" class="hover:text-blue-500">Privacidade</a>
+                    <a href="#" class="hover:text-blue-500">Termos</a>
+                    <a href="#" class="hover:text-blue-500">Sobre nós</a>
+                    <a href="#" class="hover:text-blue-500">FAQ</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-20 pt-10 border-t border-white/5">
+            <p class="text-[9px] text-slate-600 uppercase tracking-[0.4em] font-black">© 2026 CB Business Moçambique - Todos Direitos Reservados</p>
+        </div>
     </footer>
 
     <script>
@@ -207,34 +263,40 @@
         const SUPABASE_KEY = 'sb_publishable_BZ4EUkworgGfHC5-gdw3iQ_MF4FfLnT';
         const sbClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        let allProducts = [], cart = [], currentStep = 1;
+        let allProducts = [], cart = [];
 
         async function init() {
             await fetchData();
+            initParticles();
         }
 
         async function fetchData() {
-            const { data } = await sbClient.from('ebooks').select('*').order('created_at', { ascending: false });
-            allProducts = data || [];
-            renderCatalog(allProducts);
-            renderAdminTable();
+            try {
+                const { data, error } = await sbClient.from('ebooks').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                allProducts = data || [];
+                renderCatalog(allProducts);
+            } catch (err) { console.error("Erro:", err); }
         }
 
         function renderCatalog(items) {
             const grid = document.getElementById('catalog-grid');
+            if(!grid) return;
             grid.innerHTML = items.map(p => `
-                <div class="premium-card p-4 rounded-3xl group">
-                    <div class="relative aspect-square overflow-hidden rounded-2xl mb-5 bg-black">
-                        <img src="${p.cover_url || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400'}" class="w-full h-full object-cover opacity-80 group-hover:scale-110 transition-transform duration-700">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div class="premium-card p-4 group">
+                    <div class="relative overflow-hidden rounded-[1.5rem] mb-6 cursor-pointer aspect-square" onclick="openDetails('${p.id}')">
+                        <img src="${p.cover_url || 'https://via.placeholder.com/400'}" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-110">
+                        <div class="absolute inset-0 bg-blue-600/20 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center backdrop-blur-sm">
+                            <span class="bg-white text-black px-6 py-2 rounded-full font-black text-[10px] uppercase">Detalhes</span>
+                        </div>
                     </div>
-                    <span class="text-blue-500 text-[8px] font-black tracking-widest uppercase">${p.type}</span>
-                    <h3 class="text-sm font-bold mt-1 mb-4 truncate">${p.title}</h3>
-                    <div class="flex justify-between items-center">
-                        <span class="text-lg font-bold">${p.price.toLocaleString()} <span class="text-[9px] opacity-40">MT</span></span>
-                        <button onclick="addToCart('${p.id}')" class="w-9 h-9 bg-white/5 rounded-full hover:bg-blue-600 transition-all flex items-center justify-center border border-white/10">
-                            <i class="fa-solid fa-plus text-xs"></i>
-                        </button>
+                    <div class="px-2">
+                        <span class="text-blue-500 text-[8px] font-black uppercase tracking-widest">${p.type === 'app' ? 'Software' : 'E-Book'}</span>
+                        <h3 class="font-bold text-sm uppercase mb-6 truncate text-slate-100">${p.title}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="text-white font-black text-lg">${Number(p.price).toLocaleString()} <span class="text-[9px] text-slate-500">MT</span></span>
+                            <button onclick="addToCart('${p.id}')" class="bg-white/5 hover:bg-blue-600 text-white w-11 h-11 rounded-xl transition-all flex items-center justify-center border border-white/10"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                     </div>
                 </div>
             `).join('');
@@ -244,7 +306,7 @@
 
         function addToCart(id) {
             const product = allProducts.find(p => p.id === id);
-            if (!cart.find(i => i.id === id)) {
+            if (product && !cart.find(item => item.id === id)) {
                 cart.push(product);
                 updateCartUI();
                 toggleCart();
@@ -252,103 +314,152 @@
         }
 
         function updateCartUI() {
-            const list = document.getElementById('cart-items-list');
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            document.getElementById('cart-count').innerText = cart.length;
-            document.getElementById('cart-count').classList.toggle('hidden', cart.length === 0);
-            document.getElementById('cart-total').innerText = total.toLocaleString() + " MT";
-
-            list.innerHTML = cart.map(item => `
-                <div class="flex items-center gap-4 bg-white/5 p-3 rounded-xl border border-white/5">
-                    <div class="w-12 h-12 bg-black rounded-lg overflow-hidden flex-shrink-0">
-                        <img src="${item.cover_url}" class="w-full h-full object-cover">
+            const container = document.getElementById('cart-items');
+            const countLabel = document.getElementById('cart-count');
+            const totalLabel = document.getElementById('cart-total');
+            countLabel.innerText = cart.length;
+            countLabel.classList.toggle('hidden', cart.length === 0);
+            container.innerHTML = cart.length === 0 ? `<p class="text-center opacity-20 py-10 uppercase text-xs font-black">Vazio</p>` :
+                cart.map(item => `
+                    <div class="flex items-center gap-4 bg-white/[0.03] p-4 rounded-2xl border border-white/5">
+                        <img src="${item.cover_url}" class="w-12 h-12 rounded-xl object-cover">
+                        <div class="flex-1"><h4 class="text-[10px] font-black uppercase truncate w-32">${item.title}</h4><p class="text-blue-500 font-bold text-xs">${Number(item.price).toLocaleString()} MT</p></div>
+                        <button onclick="removeFromCart('${item.id}')" class="text-slate-600 hover:text-red-500"><i class="fa-solid fa-xmark"></i></button>
                     </div>
-                    <div class="flex-1">
-                        <h4 class="text-[10px] font-bold uppercase truncate w-32">${item.title}</h4>
-                        <p class="text-blue-500 text-[10px] font-bold">${item.price.toLocaleString()} MT</p>
-                    </div>
-                    <button onclick="removeFromCart('${item.id}')" class="text-slate-600 hover:text-red-500"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-            `).join('');
+                `).join('');
+            totalLabel.innerText = cart.reduce((acc, item) => acc + Number(item.price), 0).toLocaleString() + " MT";
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(i => i.id !== id);
-            updateCartUI();
-        }
+        function removeFromCart(id) { cart = cart.filter(item => item.id !== id); updateCartUI(); }
 
-        function nextStep() {
-            if (cart.length === 0) return;
-            if (currentStep === 1) {
-                document.getElementById('step-2').classList.remove('step-inactive');
-                document.getElementById('checkout-btn').innerHTML = 'Finalizar no WhatsApp <i class="fa-brands fa-whatsapp ml-2"></i>';
-                currentStep = 2;
-            } else {
-                checkoutWhatsApp();
-            }
-        }
-
-        function checkoutWhatsApp() {
-            const phone = document.getElementById('cust-phone').value;
-            if (!phone) return alert("Por favor, insira o seu número de WhatsApp.");
+        function openDetails(id) {
+            const p = allProducts.find(x => x.id === id);
+            if(!p) return;
+            document.getElementById('det-img').src = p.cover_url;
+            document.getElementById('det-title').innerText = p.title;
+            document.getElementById('det-price').innerText = Number(p.price).toLocaleString() + " MT";
+            document.getElementById('det-desc').innerText = p.descricao || "Ativo Premium.";
             
-            const total = cart.reduce((acc, item) => acc + item.price, 0);
-            const itensStr = cart.map(i => `- ${i.title}`).join('%0A');
-            const linksStr = cart.map(i => `- ${i.title}: ${i.link_entrega || 'Link pendente'}`).join('%0A');
+            // Botão de Download (Sempre visível para softwares ou após compra simulada)
+            const dlBtn = document.getElementById('det-download-btn');
+            if(p.type === 'app' && p.download_url) {
+                dlBtn.classList.remove('hidden');
+                dlBtn.href = p.download_url;
+            } else { dlBtn.classList.add('hidden'); }
 
-            const msg = `*NOVA COMPRA ELITE - CB BUSINESS*%0A%0A` +
-                        `*CLIENTE:* ${phone}%0A` +
-                        `*VALOR TOTAL:* ${total.toLocaleString()} MT%0A%0A` +
-                        `*ITENS:*%0A${itensStr}%0A%0A` +
-                        `*LINKS PARA ENTREGA (Verificar Comprovativo):*%0A${linksStr}%0A%0A` +
-                        `_Estou enviando o comprovativo em anexo._`;
-
-            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
+            document.getElementById('add-to-cart-btn').onclick = () => { addToCart(p.id); closeDetails(); };
+            document.getElementById('details-modal').classList.remove('hidden');
         }
+
+        function closeDetails() { document.getElementById('details-modal').classList.add('hidden'); }
 
         function toggleView(v) {
             ['public', 'login', 'admin'].forEach(view => document.getElementById(view + '-view').classList.add('hidden'));
             document.getElementById(v + '-view').classList.remove('hidden');
+            if(v === 'admin') loadAdminDashboard();
         }
 
         function doMasterLogin() {
-            if(document.getElementById('master-key').value === "admin") toggleView('admin');
+            if(document.getElementById('master-key').value === "Administrador-Profissional") toggleView('admin');
             else alert("Chave Incorreta.");
         }
 
-        async function saveProduct() {
-            const p = {
-                title: document.getElementById('p-title').value,
-                price: parseFloat(document.getElementById('p-price').value),
-                type: document.getElementById('p-type').value,
-                descricao: document.getElementById('p-desc').value,
-                link_entrega: document.getElementById('p-link').value,
-                cover_url: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400'
-            };
-            
-            await sbClient.from('ebooks').insert([p]);
-            fetchData();
-            alert("Ativo publicado com sucesso!");
-        }
-
-        function renderAdminTable() {
+        async function loadAdminDashboard() {
             const table = document.getElementById('admin-items-table');
             table.innerHTML = allProducts.map(p => `
-                <tr>
-                    <td class="p-6">${p.title}</td>
-                    <td class="p-6">${p.price} MT</td>
+                <tr class="border-b border-white/5 hover:bg-white/[0.02]">
+                    <td class="p-6 flex items-center gap-4"><img src="${p.cover_url}" class="w-10 h-10 rounded-lg"> <span class="font-bold uppercase">${p.title}</span></td>
+                    <td class="p-6 text-blue-500 font-black">${p.price} MT</td>
                     <td class="p-6 text-right">
-                        <button class="text-red-500 opacity-50 hover:opacity-100" onclick="deleteProduct('${p.id}')">Eliminar</button>
+                        <button onclick="editProduct('${p.id}')" class="bg-blue-600/10 text-blue-500 p-2 rounded-lg hover:bg-blue-600 hover:text-white mr-2"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button onclick="deleteProduct('${p.id}')" class="bg-red-500/10 text-red-500 p-2 rounded-lg hover:bg-red-500 hover:text-white"><i class="fa-solid fa-trash-can"></i></button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        async function deleteProduct(id) {
-            if(confirm("Deseja remover este ativo?")) {
-                await sbClient.from('ebooks').delete().eq('id', id);
-                fetchData();
+        function editProduct(id) {
+            const p = allProducts.find(x => x.id === id);
+            if(!p) return;
+            document.getElementById('p-id').value = p.id;
+            document.getElementById('p-title').value = p.title;
+            document.getElementById('p-price').value = p.price;
+            document.getElementById('p-type').value = p.type;
+            document.getElementById('p-cover-url').value = p.cover_url;
+            document.getElementById('p-link').value = p.download_url;
+            document.getElementById('p-desc').value = p.descricao;
+            document.getElementById('admin-form-title').innerText = "Editando Ativo";
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function resetAdminForm() {
+            document.getElementById('p-id').value = "";
+            document.getElementById('p-title').value = "";
+            document.getElementById('p-price').value = "";
+            document.getElementById('p-cover-url').value = "";
+            document.getElementById('p-link').value = "";
+            document.getElementById('p-desc').value = "";
+            document.getElementById('admin-form-title').innerText = "Gestão de Inventário";
+        }
+
+        async function saveProduct() {
+            const btn = document.getElementById('btn-save');
+            const id = document.getElementById('p-id').value;
+            const file = document.getElementById('p-file').files[0];
+            btn.disabled = true; btn.innerText = 'Gravando...';
+            
+            let finalCoverUrl = document.getElementById('p-cover-url').value || "https://via.placeholder.com/400";
+            if(file) {
+                const name = `${Date.now()}_${file.name}`;
+                await sbClient.storage.from('produtos').upload(name, file);
+                const { data } = sbClient.storage.from('produtos').getPublicUrl(name);
+                finalCoverUrl = data.publicUrl;
             }
+
+            const payload = {
+                title: document.getElementById('p-title').value,
+                price: parseFloat(document.getElementById('p-price').value),
+                type: document.getElementById('p-type').value,
+                cover_url: finalCoverUrl,
+                download_url: document.getElementById('p-link').value,
+                descricao: document.getElementById('p-desc').value
+            };
+
+            if(id) { await sbClient.from('ebooks').update(payload).eq('id', id); }
+            else { await sbClient.from('ebooks').insert([payload]); }
+
+            location.reload();
+        }
+
+        async function deleteProduct(id) {
+            if(confirm("Eliminar permanente?")) { await sbClient.from('ebooks').delete().eq('id', id); fetchData(); loadAdminDashboard(); }
+        }
+
+        function filterItems(type) {
+            renderCatalog(type === 'all' ? allProducts : allProducts.filter(p => p.type === type));
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            const itensStr = cart.map(item => `- *${item.title}* (${item.price} MT)`).join('%0A');
+            const total = cart.reduce((acc, item) => acc + Number(item.price), 0);
+            const msg = `*PEDIDO CB BUSINESS*%0A%0A*ITENS:*%0A${itensStr}%0A%0A*TOTAL:* ${total} MT%0A%0A*MÉTODOS:* M-pesa: 844606198 | e-Mola: 876606198 | m-Kesh: 820386282`;
+            window.open(`https://wa.me/258820386282?text=${msg}`, '_blank');
+            setTimeout(() => { cart = []; updateCartUI(); toggleCart(); }, 1000);
+        }
+
+        function initParticles() {
+            const canvas = document.getElementById('particles-js');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            let particles = [];
+            for(let i=0; i<40; i++) particles.push({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, size: Math.random()*1.5, speed: Math.random()*0.3+0.1 });
+            function animate() {
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle = "rgba(59,130,246,0.2)";
+                particles.forEach(p => { ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); p.y -= p.speed; if(p.y<0) p.y=canvas.height; });
+                requestAnimationFrame(animate);
+            }
+            animate();
         }
 
         window.onload = init;
